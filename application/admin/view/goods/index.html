@@ -1,0 +1,116 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-primary btn-flat" href="<?=url('add', ['type'=>1]) ?>" role="button">添加商品</a>
+            <a class="btn btn-primary btn-flat" href="<?=url('add', ['type'=>2]) ?>" role="button">添加秒杀商品</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商品名</th>
+                        <th>分类</th>
+                        <th>缩略图</th>
+                        <th>库存</th>
+                        <th>是否秒杀商品</th>
+                        <th>是否推荐</th>
+                        <th>是否推荐到用户</th>
+                        <th>上架状态</th>
+                        <th>加入时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['goods_name'] ?></td>
+                        <td><?=$v['cate_id'] ?></td>
+                        <td><img src="<?=$v['cover'] ?>" class="img-thumbnail" width="50"></td>
+                        <td><?=$v['store_count']-$v['sales_count'] ?></td>
+                        <td>
+                            <?php if ($v['type'] == 1): ?>
+                                <span class="label label-default">否</span>
+                            <?php else: ?>
+                                <span class="label label-info">是</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($v['is_recommend']): ?>
+                                <span class="label label-info">是</span>
+                            <?php else: ?>
+                                <span class="label label-default">否</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($v['is_user_recommend']): ?>
+                                <span class="label label-info">是</span>
+                            <?php else: ?>
+                                <span class="label label-default">否</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($v['is_on_sale']): ?>
+                                <span class="label label-info" data-on-sale="1" onclick="setOnSale(this, <?=$v['id'] ?>)" style="cursor: pointer;">上架中</span>
+                            <?php else: ?>
+                                <span class="label label-default" data-on-sale="0" onclick="setOnSale(this, <?=$v['id'] ?>)" style="cursor: pointer;">已下架</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?=$v['create_at'] ?>
+                        </td>
+                        <td><?=$v['update_at'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-flat btn-sm" href="<?=url('add', ['id'=>$v['id'], 'type'=>$v['type']]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-flat btn-sm" onclick="setDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer"><?=$data->render() ?></div>
+    </div>
+</section>
+
+<script>
+    var requestUrl = {
+        setOnSale : "<?=url('setOnSale') ?>",
+        setDelete : "<?=url('setDelete') ?>"
+    };
+    // 上下架
+    function setOnSale(obj, goodsId) {
+        var value = $(obj).attr('data-on-sale')==1 ? 0 : 1;
+        $.post(requestUrl.setOnSale, {id:goodsId, on_sale:value}, function(res){
+            if (res) {
+                if (value) {
+                    $(obj).addClass('label-info').removeClass('label-default').text('上架中').attr('data-on-sale', 1);
+                } else {
+                    $(obj).removeClass('label-info').addClass('label-default').text('已下架').attr('data-on-sale', 0);
+                }
+            } else {
+                bayMax.warning('设置上架状态失败');
+            }
+        })
+    }
+    // 删除
+    function setDelete(obj, goodsId) {
+        $.post(requestUrl.setDelete, {id:goodsId}, function(res){
+            if (res) {
+                $(obj).closest('tr').remove();
+            } else {
+                bayMax.warning('删除失败');
+            }
+        })
+    }
+</script>

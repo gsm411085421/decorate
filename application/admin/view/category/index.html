@@ -1,0 +1,100 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header">
+            <a class="btn btn-primary btn-flat" href="<?=url('addInfinite') ?>" role="button">添加分类</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>分类名</th>
+                        <?php if ($inputIcon): ?>
+                        <th>图标</th>
+                        <?php endif; ?>
+                        <th>排序值</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="main-tbody">
+                    <?php foreach ($data as $v): ?>
+                    <tr data-id="<?=$v['id'] ?>" data-pid="<?=$v['pid'] ?>" <?=$v['pid']==0?'':'class="hide"' ?>>
+                        <td><?=$v['id'] ?></td>
+                        <td>
+                            <?=$v['indentation'] ?>
+                            <span class="glyphicon btn-success glyphicon-plus" style="padding:2px; font-size:12px;" aria-hidden="false" data-status="0" onclick="rowClicked(this, <?=$v['id'] ?>, <?=$v['pid'] ?>)"></span>&nbsp;&nbsp;&nbsp;&nbsp;<?=$v['cate_name'] ?>
+                        </td>
+                        <?php if ($inputIcon): ?>
+                        <td><img src="<?=$v['icon'] ?>" alt="null" width="30"></td>
+                        <?php endif; ?>
+                        <td><?=$v['sorted'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-flat btn-sm" href="<?=url('addInfinite', ['id'=>$v['id']]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-flat btn-sm" onclick="itemDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    var requestUrl = {
+        delete : "<?=url('delete') ?>"
+    };
+
+    var jQueryDOM = {
+        tbody : $("#main-tbody")
+    };
+
+    /** 展开/收缩 */
+    function rowClicked(obj, id, pid) {
+        var $obj  = $(obj);
+        var status = $obj.attr('data-status'),
+            $tr    = $obj.closest('tr'),
+            $tbody  = $obj.closest('tbody');
+        if (status == 1) { // 收缩
+            $obj.removeClass('glyphicon-minus').addClass('glyphicon-plus')
+            // 递归
+            recursionContract(id)
+        } else { // 展开
+            $obj.removeClass('glyphicon-plus').addClass('glyphicon-minus')
+            $tbody.children('[data-pid='+id+']').removeClass('hide');
+        }
+        $obj.attr('data-status', status==1 ? 0 : 1);
+    }
+    // 递归收缩
+    function recursionContract(id) {
+        var $item = '';
+        var allTr = jQueryDOM.tbody.children('tr[data-pid='+id+']');
+        $.each(allTr, function(index, item){
+            $item = $(item);
+            $item.addClass('hide').find('.glyphicon').removeClass('glyphicon-minus').addClass('glyphicon-plus').attr('data-status',0);
+            if (jQueryDOM.tbody.children('tr[data-pid='+$item.attr('data-id')+']').length) {
+                recursionContract($item.attr('data-id'));
+            }
+        });
+    }
+
+    /** 删除分类 */
+    function itemDelete(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requestUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').remove();
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            }, 'json');
+        })
+    }
+</script>

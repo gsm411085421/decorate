@@ -1,0 +1,90 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header">
+            <a class="btn btn-primary btn-flat btn-sm" href="<?=url('attributeEdit') ?>" role="button">添加商品属性</a>
+            <form action="<?=url('attribute', ['query'=>1]) ?>" method="get" class="form-inline pull-right" role="form" data-pjax>
+                <div class="form-group">
+                    <label class="sr-only" for="">模型筛选</label>
+                    <select name="goods_model_id" id="inputGoods_model_id" class="form-control input-sm">
+                        <option value="">选择模型</option>
+                        <?php foreach ($goodsModelData as $k => $v): ?>
+                            <option value="<?=$k ?>"><?=$v ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm btn-flat">筛选</button>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>属性名称</th>
+                        <th>所属模型</th>
+                        <th>录入方式</th>
+                        <th>可用值</th>
+                        <th>排序值</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['attr_name'] ?></td>
+                        <td><?=$goodsModelData[$v['goods_model_id']] ?></td>
+                        <td><?=$fieldFieldType[$v['field_type']] ?></td>
+                        <td><?=$v['valid'] ?></td>
+                        <td><input type="text" class="form-control input-sm" value="<?=$v['sorted'] ?>" onblur="updateSorted(this.value, <?=$v['id'] ?>)"></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-sm btn-flat" href="<?=url('attributeEdit', ['id'=>$v['id']]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="itemDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <?=$data->render(); ?>
+        </div>
+    </div>
+</section>
+
+<script>
+var requestUrl = {
+    updateSorted : "<?=url('attributeUpdateSorted') ?>",
+    delete       : "<?=url('attributeDelete') ?>"
+};
+    /** 排序值 失去焦点 更新排序 */
+    function updateSorted(value, id) {
+        if (value) {
+            if (value > 0 && value < 65536) {
+                $.post(requestUrl.updateSorted, {id:id, value:value});
+            } else {
+                bayMax.warning('排序值介于 0 ~ 65536 之间，请输入正确的值');
+            }
+        }
+    }
+    /** 删除属性 */
+    function itemDelete(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requestUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').remove();
+                } else {
+                    bayMax.warning(res.msg)
+                }
+            })
+        });
+    }
+</script>

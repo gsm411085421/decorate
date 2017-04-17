@@ -1,0 +1,147 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="col-sm-8">
+        <div class="box">
+            <div class="box-header"></div>
+            <div class="box-body" id="editor-container">
+                <!-- <script id="editor" type="text/plain" style="width:100%;height:600px;" no-pjax></script> -->
+                <textarea id="editor" type="text/plain" name="content" style="width:100%;min-height: 600px;" ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="box box-info">
+            <div class="box-header">
+                <h3>基本信息</h3>
+            </div>
+            <div class="box-body">
+                <form action="{:url('Article/create')}" method="POST" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" id="inputTitle" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="textareaSummary" class="col-sm-2 control-label">摘要</label>
+                        <div class="col-sm-10">
+                            <textarea name="summary" id="textareaSummary" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTags" class="col-sm-2 control-label">标签</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="tags" id="inputTags" class="form-control" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="file-cover" class="col-sm-2 control-label">封面</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="file" id="file-cover">
+                            <input type="hidden" name="cover" id="hidden-cover">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPublish_at" class="col-sm-2 control-label">发布时间</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="publish_at" id="inputPublish_at" class="form-control" value="<?=date('Y-m-d', $_SERVER['REQUEST_TIME']) ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <input type="hidden" name="content" value="">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default pull-right" onclick="javascript:history.back(-1)">返回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+var requestUrl = {
+    index  : "{:url('index')}",
+    upload : "{:url('Upload/image')}",
+};
+$(function(){
+
+
+    // fileinput
+    $("#file-cover").fileinput({
+        language : 'zh',
+        uploadUrl : requestUrl.upload,
+        allowedFileTypes : ['image'],
+    }).on('fileuploaded', function(event,data,previewId,index){
+        if (data.response.code) {
+            $("#hidden-cover").val(data.response.data.savename)
+        } else {
+            bayMax.warning(data.response.msg)
+        }
+    }).on('filecleared', function(event){
+        $("#hidden-cover").val('');
+    });
+    // tagsinput
+    $("#inputTags").tagsinput('items')
+    // datepicerk
+    init_datepicker($("#inputPublish_at"),{
+        startDate : "<?=date('Y-m-d') ?>",
+        todayHighlight : true,
+        zIndexOffset : 999
+    });
+    // ueditor
+    /*var ue = UE.getEditor('editor',{
+    toolbars:[['fullscreen',  'undo', 'redo', '|',
+        'bold', 'italic',   'formatmatch', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist',  '|', 'fontfamily', 'fontsize', '|',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 
+        'link', 'unlink',  '|',
+        'simpleupload', 'insertimage']],
+        textarea:'content' ,
+        // initialFrameWidth:800 ,//初始化宽
+        // initialFrameHeight:320 ,//初始化高
+        wordCount:true,          //是否开启字数统计
+        maximumWords:1000,       //允许的最大字符数
+        utoHeightEnabled:false,//  是否自动长高,默认true
+    });*/
+
+    /*var ue = new UE.ui.Editor({
+    toolbars:[['fullscreen',  'undo', 'redo', '|',
+        'bold', 'italic',   'formatmatch', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist',  '|', 'fontfamily', 'fontsize', '|',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 
+        'link', 'unlink',  '|',
+        'simpleupload', 'insertimage']],
+        textarea:'content' ,
+        // initialFrameWidth:800 ,//初始化宽
+        initialFrameHeight:600 ,//初始化高
+        wordCount:true,          //是否开启字数统计
+        maximumWords:1000,       //允许的最大字符数
+        utoHeightEnabled:false,//  是否自动长高,默认true
+    });    
+    ue.render('editor')*/
+
+    <?=widget('WangEditor/script') ?>
+
+    $("form :submit").click(function(event){
+        event.preventDefault();
+        var $form = $("form");
+        $("form [name=content]").val(editor.$txt.html())
+        $.post($form.attr('action'), $form.serializeArray(), function(res){
+            if (res.code) {
+                bayMax.msg('保存成功', function(){
+                    {literal}
+                    $.pjax({url:requestUrl.index, container : "#pjax-container"})
+                    {/literal}
+                })
+            } else {
+                bayMax.warning(res.msg);
+            }
+        })
+    })
+})
+</script>

@@ -1,0 +1,42 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <form action="<?=url('modelEdit') ?>" method="POST" class="form-horizontal" role="form" onsubmit="return false;">
+        <?=$form ?>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <?php if ($id): ?>
+                    <input type="hidden" name="id" value="<?=$id ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn btn-primary btn-flat">保存</button>
+                <button type="button" class="btn btn-default btn-flat col-sm-offset-2" onclick="javascript:history.back(-1);">返回</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script>
+var requestUrl = {
+    index : "<?=url('attribute') ?>"
+};
+    $(function(){
+        $('form :submit').on('click', function(){
+            var $form = $('form');
+            $.post($form.attr('action'), $form.serializeArray(), function(res){
+                if (res.code) {
+                    bayMax.msg(res.msg, function(){
+                        $.pjax({ url: requestUrl.index, container: '#pjax-container'})
+                    });
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            });
+        });
+
+        init_icheck($(':radio'))
+    })
+</script>

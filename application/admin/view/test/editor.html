@@ -1,0 +1,19 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div id="editor1" style="min-height: 300px;">editor</div>
+</section>
+<script>
+    $(function(){
+        /*wangEditor.config.printLog = false;
+        var editor = new wangEditor('editor');
+        editor.config.uploadImgUrl = '<?=url('upload/wangEditor') ?>';
+        editor.config.uploadImgFileName = 'file'
+        editor.create();*/
+        {:widget('WangEditor/script', ['id'=>'editor1'])}
+    })
+</script>

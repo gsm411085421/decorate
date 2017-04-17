@@ -1,0 +1,105 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header">
+            <a class="btn btn-primary btn-flat" data-toggle="modal" href='#modal-edit'>添加商品模型</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>模型名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['name'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-sm btn-flat" href="<?=url('attribute', ['model_id'=>$v['id']]) ?>" role="button">属性列表</a>
+                                <button type="button" class="btn btn-info btn-sm btn-flat" onclick="itemEdit(this, <?=$v['id'] ?>, '<?=$v['name'] ?>')">编辑</button>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="itemDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <?=$data->render(); ?>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="<?=url('modelEdit') ?>" method="POST" class="form-horizontal" role="form" onsubmit="return false;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">编辑模型名称</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputName" class="col-sm-2 control-label">模型名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" id="inputName" class="form-control" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="modal-edit-submit" onclick="bayMax.modalSubmit(this)">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var requestUrl = {
+        delete : "<?=url('modelDelete') ?>"
+    };
+    var jQueryDOM = {
+        modalEdit   : $("#modal-edit"),
+        modalSubmit : $("#modal-edit-submit"),
+    };
+
+    $(function(){
+        jQueryDOM.modalEdit.on('hidden.bs.modal', function(){
+            var $dom = jQueryDOM.modalEdit;
+            $dom.find('#inputName').val('').end().find('[name=id]').val('');
+        });
+    })
+
+    /** 编辑 模态框 */
+    function itemEdit(obj, id, name) {
+        var $form = jQueryDOM.modalEdit.find('form');
+        $form.find("#inputName").val(name).end().find('[name=id]').val(id);
+        jQueryDOM.modalEdit.modal('show');
+    }
+
+    /** 删除模型 */
+    function itemDelete(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requestUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').remove();
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            })
+        });
+    }
+</script>

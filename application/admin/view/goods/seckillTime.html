@@ -1,0 +1,102 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-primary btn-flat" data-toggle="modal" href='#modal-edit'>添加时段</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>时段</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['time_frame'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm btn-flat" onclick="itemEdit(this, <?=$v['id'] ?>, '<?=$v['time_frame'] ?>')">编辑</button>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="itemDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="<?=url('seckillTimeEdit') ?>" method="POST" class="form-horizontal" role="form" onsubmit="return false;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">编辑秒杀时段</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputTime_frame" class="col-sm-2 control-label">时段</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="text" name="time_frame" id="inputTime_frame" class="form-control" value="">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" value="">
+                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary btn-flat" onclick="bayMax.modalSubmit(this)">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var jQueryDOM = {
+        modal : $('#modal-edit'),
+    };
+
+    var requestUrl = {
+        delete : "<?=url('seckillTimeDelete') ?>"
+    };
+
+    $(function(){
+        jQueryDOM.modal.on('hidden.bs.modal', function(){
+            $(this).find('#inputTime_frame').val('').end().find('[name=id]').val('');
+        })
+        init_datetimepicker($('#inputTime_frame'), {startView:'day', format:'hh:ii'});
+    })
+
+    function itemEdit(obj, id, time) {
+        jQueryDOM.modal.find('#inputTime_frame').val(time).end().modal('show')
+        $('#inputTime_frame').datetimepicker('update')
+    }
+
+    function itemDelete(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requestUrl.delete, {id:id}, function(res){
+                if (res.code) {
+                    $(obj).closest('tr').remove();
+                } else {
+                    bayMax.warning(res.msg);
+                }
+            })
+        })
+    }
+</script>

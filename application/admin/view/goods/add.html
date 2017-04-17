@@ -1,0 +1,407 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <form action="<?=url('add') ?>" method="POST" class="form-horizontal" role="form" onsubmit="return false;">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">基本信息</a></li>
+              <li><a href="#tab_2" data-toggle="tab">商品详情</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">商品基本信息</h3>
+                      </div>
+                      <div class="panel-body">
+                          <div class="form-group">
+                              <label for="inputCate_id" class="col-sm-2 control-label">商品类别</label>
+                              <div class="col-sm-2">
+                                  <select name="cate_id" id="inputCate_id" class="form-control">
+                                      <option value="1">家电</option>
+                                      <option value="2">手机</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputModal_id" class="col-sm-2 control-label">商品模型</label>
+                            <div class="col-sm-2">
+                              <select name="model_id" id="inputModal_id" class="form-control" onchange="goodsModelChange(this)">
+                                <option value="0">请选择</option>
+                                <?php foreach ($modelCates as $id=>$name): ?>
+                                <option value="<?=$id ?>" <?=$exists&&$detail['model_id']==$id?'selected':'' ?>><?=$name ?></option>
+                                <?php endforeach; ?>
+                              </select>
+                              <p class="help-block">决定商品具有的属性</p>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="inputGoods_name" class="col-sm-2 control-label">商品名</label>
+                              <div class="col-sm-8">
+                                  <input type="text" name="goods_name" id="inputGoods_name" class="form-control" value="<?=$exists?$detail['goods_name']:'' ?>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="textareaSummary" class="col-sm-2 control-label">描述</label>
+                              <div class="col-sm-8">
+                                  <textarea name="summary" id="textareaSummary " class="form-control"><?=$exists?$detail['summary']:'' ?></textarea> 
+                                </div>
+                          </div>
+                          <!-- 非秒杀 -->
+                          <div class="form-group">
+                              <label for="inputSuggested_price" class="col-sm-2 control-label">建议零售价</label>
+                              <div class="col-sm-8">
+                                  <div class="input-group">
+                                    <input type="number" name="suggested_price" id="inputSuggested_price" class="form-control" value="<?=$exists?$detail['suggested_price']:'' ?>" step="1">
+                                    <div class="input-group-addon">元</div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputPromotion_information" class="col-sm-2 control-label">促销信息</label>
+                            <div class="col-sm-8">
+                              <input type="text" name="promotion_information" id="inputPromotion_information" class="form-control" value="<?=$exists?$detail['promotion_information']:'' ?>">
+                            </div>
+                          </div>
+                          <!-- ./end非秒杀 -->
+                          <?php if ($type == 2): ?>
+                          <!-- 秒杀 -->
+                          <div class="form-group">
+                            <label for="inputSeckill_price" class="col-sm-2 control-label">秒杀价</label>
+                            <div class="col-sm-8">
+                              <div class="input-group">
+                                <input type="number" name="seckill_price" id="inputSeckill_price" class="form-control" value="<?=$exists?$detail['seckill_price']:'' ?>" step="1">
+                                <div class="input-group-addon">元</div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- ./end 秒杀 -->
+                          <?php endif; ?>
+                          <div class="form-group">
+                            <label for="input" class="col-sm-2 control-label">封面图</label>
+                            <div class="col-sm-8">
+                              <img src="<?=$exists?$detail['cover']:'/static/dist/img/add-img.png' ?>" class="img-thumbnail" id="img-origin" style="cursor:pointer;max-width:200px;" onclick="selectGoodsOriginImg()">
+                              <!-- <p class="help-block">aaaaaa</p> -->
+                              <input type="file" name="file" accept="image/gif,image/jpeg,image/jpg,image/png" id="file-origin-img" class="hide" onchange="uploadImg(this.files[0], '#img-origin', '#hidden-origin-img')">
+                              <input type="hidden" name="cover" id="hidden-origin-img" value="<?=$exists?$detail['cover']:'' ?>">
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <?php if ($type == 2): ?>
+                  <!-- 秒杀时段 -->
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">秒杀时段设置</h3>
+                      <span class="pull-right" style="position:relative;top:-26px;">
+                        <button type="button" class="btn btn-warning btn-flat" onclick="seckillBlockAdd()">添加</button>
+                      </span>
+                    </div>
+                    <div class="panel-body" id="panel-seckill">
+                      <?php if ($exists): foreach ($detail->seckill as $index => $seckill): ?>
+                        <div class="price-block">
+                          <span class="price-block-input">
+                            <input type="text" name="seckill[date][]" class="form-control js-seckill-date" placeholder="秒杀日期" value="<?=$seckill->active_date ?>">
+                          </span>
+                          <span class="price-block-input">
+                            <select name="seckill[time][]" class="form-control">
+                              <?php foreach ($seckillTime as $v): ?>
+                              <option value="<?=$v['id'] ?>" <?=$seckill['time_frame_id']==$v['id']?'selected':'' ?>><?=$v['time_frame'] ?></option>
+                              <?php endforeach; ?>
+                            </select>
+                          </span>
+                          <?php if ($index != 0): ?>
+                          <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="seckillBlockDelete(this)"><i class="fa fa-trash"></i></button>
+                          <?php endif; ?>
+                        </div>
+                      <?php endforeach;else: ?>
+                      <div class="price-block">
+                        <span class="price-block-input">
+                          <input type="text" name="seckill[date][]" class="form-control js-seckill-date" placeholder="秒杀日期" value="">
+                        </span>
+                        <span class="price-block-input">
+                          <select name="seckill[time][]" class="form-control">
+                            <?php foreach ($seckillTime as $v): ?>
+                            <option value="<?=$v['id'] ?>"><?=$v['time_frame'] ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </span>
+                        <!-- <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="seckillBlockDelete(this)"><i class="fa fa-trash"></i></button> -->
+                      </div>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                  <!-- ./end 秒杀时段 -->
+                  <?php endif; ?>
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">商品价格设置</h3>
+                          <span class="pull-right" style="position:relative;top:-26px;">
+                            <button type="button" class="btn btn-warning btn-flat" onclick="priceBlockAdd()">添加</button>
+                          </span>
+                      </div>
+                      <div class="panel-body" id="panel-price">
+                      <?php if ($exists):foreach ($detail['price'] as $index => $price): ?>
+                          <div class="price-block">
+                            <span class="price-block-input">
+                              <input type="text" name="price[name][]" class="form-control" placeholder="套餐名" value="<?=$price['spec_name'] ?>">
+                            </span>
+                            <span class="price-block-input">
+                                 <input type="text" name="price[price][]" class="form-control" placeholder="价格,单位为：元" value="<?=$price['price'] ?>">
+                            </span>
+                            <span class="price-block-input">
+                              <input type="text" name="price[store][]" class="form-control" placeholder="库存量" value="<?=$price['inventory'] ?>">
+                            </span>
+                            <?php if ($index != 0): ?>
+                            <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="priceBlockDelete(this)"><i class="fa fa-trash"></i></button>
+                            <?php endif; ?>
+                          </div>
+                      <?php endforeach; else: ?>
+                         <div class="price-block">
+                           <span class="price-block-input">
+                             <input type="text" name="price[name][]" class="form-control" placeholder="套餐名" value="">
+                           </span>
+                           <span class="price-block-input">
+                                <input type="text" name="price[price][]" class="form-control" placeholder="价格,单位为：元" value="">
+                           </span>
+                           <span class="price-block-input">
+                             <input type="text" name="price[store][]" class="form-control" placeholder="库存量" value="">
+                           </span>
+                           <!-- <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="priceBlockDelete(this)"><i class="fa fa-trash"></i></button> -->
+                         </div>
+                       <?php endif; ?>
+                      </div>
+                  </div>
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">商品属性设置</h3>
+                      </div>
+                      <div class="panel-body" id="panel-attribute"> <?=$attrForm ?></div>
+                  </div>
+                  <div class="panel panel-info">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">轮播图 <small>建议分辨率 720*720</small></h3>
+                      </div>
+                      <div class="panel-body">
+                        <?php for ($i = 0; $i < 3; $i ++): // 仅三张图 ?>
+                          <img src="<?=$exists&&isset($detail['img'][$i]['src'])?$detail['img'][$i]['src']:'/static/dist/img/add-img.png' ?>" class="img-thumbnail js-goods-img" style="cursor:pointer;max-width:200px;" onclick="selectGoodsImg(this)">
+                        <?php endfor; ?>
+                          <!-- <img src="/static/dist/img/add-img.png" class="img-thumbnail js-goods-img" style="cursor:pointer;max-width:200px;" onclick="selectGoodsImg(this)">
+                          <img src="/static/dist/img/add-img.png" class="img-thumbnail js-goods-img" style="cursor:pointer;max-width:200px;" onclick="selectGoodsImg(this)"> -->
+                          <input type="file" id="file-goods-img" class="hide" accept="image/gif,image/jpeg,image/jpg,image/png" data-img-index="0" onchange="uploadGoodsImg(this)">
+                      </div>
+                  </div>
+              </div>
+              <div class="tab-pane" id="tab_2">
+                  <div class="box-body" id="editor-container">
+                      <textarea id="editor" name="detail" style="height:500px;"><?=$exists?$detail['detail']:'' ?></textarea>
+                  </div>
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <input type="hidden" name="id" value="<?=$exists?$detail['id']:'' ?>">
+                    <input type="hidden" name="type" value="<?=$type ?>"> <!-- 普通商品 秒杀商品 -->
+                    <button type="submit" class="btn btn-primary btn-flat" onclick="formSubmit(this)">保存</button>
+                    <a class="btn btn-default btn-flat col-sm-offset-2" href="<?=url('index') ?>" role="button">返回</a>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</section>
+
+<script>
+    var requestUrl = {
+      index : "<?=url('index') ?>",
+      add : "<?=url('add') ?>",
+    };
+
+    var Model = {
+      // 秒杀时段数据
+      get seckillTime(){
+        return <?=json_encode($seckillTime) ?>;
+      }
+    };
+
+    var formData = {
+      // 商品轮播图
+      goods_img : [<?=$exists?$detail['img_js']:'' ?>],
+    };
+
+
+    var View  = {
+      cache : {},
+      // 秒杀时段 options
+      get seckillTime(){
+        if (this.cache.seckillTime == undefined) {
+          this._seckillTimeOptions();
+        }
+        return this.cache.seckillTime;
+      },
+
+      // 价格块添加
+      get priceBlockAdd(){
+        return '<div class="price-block">\
+                     <span class="price-block-input">\
+                       <input type="text" name="price[name][]" class="form-control" placeholder="套餐名" value="">\
+                     </span>\
+                     <span class="price-block-input">\
+                          <input type="text" name="price[price][]" class="form-control" placeholder="价格,单位为：元" value="">\
+                     </span>\
+                     <span class="price-block-input">\
+                       <input type="text" name="price[store][]" class="form-control" placeholder="库存量" value="">\
+                     </span>\
+                     <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="priceBlockDelete(this)"><i class="fa fa-trash"></i></button>\
+                   </div>';
+      },
+      // 秒杀时段块添加
+      get seckillBlockAdd(){
+        return '<div class="price-block">\
+                    <span class="price-block-input">\
+                      <input type="text" name="seckill[date][]" class="form-control js-seckill-date" placeholder="秒杀日期" value="">\
+                    </span>\
+                    <span class="price-block-input">\
+                      <select name="seckill[time][]" class="form-control">\
+                        '+this.seckillTime+'\
+                      </select>\
+                    </span>\
+                    <button type="button" class="btn btn-danger btn-sm btn-flat price-delete-btn" onclick="seckillBlockDelete(this)"><i class="fa fa-trash"></i></button>\
+                  </div>';
+      },
+
+      _seckillTimeOptions : function(){
+        var html = '';
+        $.each(Model.seckillTime, function(index, item){
+          html += '<option value="'+item.id+'">'+item.time_frame+'</option>';
+        })
+        this.cache.seckillTime = html;
+      },
+    };
+
+    $(function(){
+        <?=widget('WangEditor/script', ['id'=>'editor']) ?>
+        init_datepicker($('.js-seckill-date'));
+    })
+
+    /** 商品模型切换 加载模型视图 */
+    function goodsModelChange(obj) {
+      var $obj = $(obj), $panelAttr = $("#panel-attribute");
+      var modelId = $obj.val();
+      if (modelId > 0) {
+        $.get(requestUrl.add, {action : 'attribute', model : modelId}, function(res){
+          $panelAttr.html(res);
+        });
+      } else {
+          $panelAttr.empty();
+      }
+    }
+
+    function formSubmit(obj) {
+      var $form = $(obj).closest('form');
+      var hiddenImg = '';
+      for(var i = 0 ; i < formData.goods_img.length; i ++) {
+        hiddenImg += '<input type="hidden" name="goods_img[]" value="'+formData.goods_img[i]+'" >'
+      }
+      $form.find("[name='goods_img[]']").remove();
+      $(obj).before(hiddenImg);
+      var data  = $form.serializeArray();
+      // 数据验证 TODO::
+      $.post($form.attr('action'), data, function(res){
+        if (res.code) {
+          bayMax.msg(res.msg, function(){
+            $.pjax({ url : requestUrl.index, container: '#pjax-container'})
+          })
+        } else {
+          bayMax.warning(res.msg)
+        }
+      })
+    }
+
+    /** 删除价格块 */
+    function priceBlockDelete(obj) {
+      $(obj).closest('.price-block').remove();
+    }
+
+    /** 添加价格块 */
+    function priceBlockAdd() {
+        $("#panel-price").append(View.priceBlockAdd)
+    }
+
+    function seckillBlockAdd() {
+      $('#panel-seckill').append(View.seckillBlockAdd);
+      init_datepicker($('.js-seckill-date:last'));
+    }
+
+    function seckillBlockDelete(obj) {
+      $(obj).closest('.price-block').remove();
+    }
+
+    function uploadImg(file, img, hidden) {
+      var form = new FormData();
+      form.append('file', file);
+
+      ajaxImageUpload(file, function(res){
+        if (res.code) {
+          var imgSrc = '/uploads/'+res.data.savename.replace('\\','/');
+          $(img).attr('src', imgSrc);
+          if (typeof hidden == 'function') {
+            hidden();
+          } else {
+            $(hidden).val(imgSrc)
+          }
+        } else {
+          bayMax.warning(res.msg)
+        }
+      });
+    }
+
+    /** 轮播图点击选择图片 */
+    function selectGoodsImg(obj) {
+      var index = $(obj).index('.js-goods-img');
+      $("#file-goods-img").attr('data-img-index', index).trigger('click');
+    }
+
+    function selectGoodsOriginImg() {
+      $('#file-origin-img').trigger('click');
+    }
+
+    /**
+     * ajax FormData 文件上传
+     * @param  {object}   file 文件对象
+     * @param  {Function} done 上传完成回调函数
+     */
+    function ajaxImageUpload(file, done) {
+      var form = new FormData();
+      form.append('file', file);
+
+      $.ajax({
+        url : '/admin/upload/image.html',
+        type : 'POST',
+        cache : false,
+        data : form,
+        processData : false,
+        contentType : false
+      }).done(done);
+    }
+
+    /** 上传轮播图 */
+    function uploadGoodsImg(obj){
+      var file = obj.files[0];
+      var imgIndex = $(obj).attr('data-img-index');
+      ajaxImageUpload(file,function(res){
+        if (res.code) {
+          var imgSrc = '/uploads/'+res.data.savename.replace('\\','/');
+          $('.js-goods-img').eq(imgIndex).attr('src', imgSrc);
+          formData.goods_img[imgIndex] = imgSrc;
+        } else {
+          bayMax.warning(res.msg);
+        }
+      });
+    }
+</script>
+

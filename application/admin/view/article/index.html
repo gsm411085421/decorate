@@ -1,0 +1,110 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <a class="btn btn-primary" href="{:url('Article/create')}" role="button">添加文章</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>标题</th>
+                        <th>摘要</th>
+                        <th>发布时间</th>
+                        <th>点击量</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {foreach $data as $v}
+                    <tr>
+                        <td>{$v.id}</td>
+                        <td>{$v.title}</td>
+                        <td>{$v.summary|mb_substr=0,15}</td>
+                        <td>{$v.publish_at}</td>
+                        <td>{$v.click}</td>
+                        <td class="status">
+                            <?php if($v['status'] == 0): ?>
+                                <span class="label label-default">未审核</span>
+                            <?php elseif($v['status'] == 1): ?>
+                                <span class="label label-success">发布中</span>
+                            <?php else: ?>
+                                <span class="label label-danger">已停止</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                状态 <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a href="javascript:;" onclick="itemStatus(this, {$v.id}, 1)">发布</a></li>
+                                <li><a href="javascript:;" onclick="itemStatus(this, {$v.id}, 2)">停止</a></li>
+                              </ul>
+                            </div>
+                            <a role="button" class="btn btn-primary" href="{:url('edit', ['id'=>$v['id']])}"><i class="fa fa-pencil"></i></a>
+                            <button type="button" class="btn btn-danger" onclick="itemTrash(this, {$v.id})"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    <?php if ($data->render()):  ?>
+                    <tr>
+                        <td colspan="8" style="text-align: right;">{$data->render()}</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    $(function(){
+
+    })
+var requestUrl = {
+    status : "{:url('setStatus')}",
+    trash  : "{:url('addToTrash')}",
+};
+// 状态设置
+    function itemStatus(obj, id, status){
+        $.post(requestUrl.status, {id:id, status: status}, function(res){
+            if (res.code) {
+                bayMax.warning(res.msg);return;
+            }
+            if (res) {
+                var html = '';
+                switch (status) {
+                    case 1 : 
+                        html = '<span class="label label-success">发布中</span>';break;
+                    default : 
+                        html = '<span class="label label-danger">已停止</span>';break;
+                }
+                $(obj).closest('td').siblings('.status').html(html);
+            } else {
+                bayMax.warning('发生错误');
+            }
+        })
+    }
+// 放入回收站
+    function itemTrash(obj, id) {
+        bayMax.deleteConfirm(function(){
+            $.post(requestUrl.trash, {id:id}, function(res){
+                if (res.code) {
+                    bayMax.warning(res.msg);return;
+                }
+                if (res) {
+                    $(obj).closest('tr').fadeOut().remove();
+                } else {
+                    bayMax.warning('发生错误');
+                }
+            })
+        })
+    }
+</script>

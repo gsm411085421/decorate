@@ -1,0 +1,94 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header"></div>
+        <div class="box-body">
+            <form action="{:url('editUserGroup')}" method="POST" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="inputTitle" class="col-sm-2 control-label">用户组</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="title" id="inputTitle" class="form-control" value="{$detail.title??''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStatus" class="col-sm-2 control-label">状态</label>
+                        <div class="col-sm-8">
+                            <div class="checkbox">
+                                <input type="checkbox" name="status" value="1" <?=!isset($detail['status'])||($detail['status']==1)?'checked':'' ?>>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRule" class="col-sm-2 control-label">可用权限</label>
+                        <div class="col-sm-8">
+                        <?php foreach ($rules as $ruleGroup=>$rule): ?>
+                            <div class="panel panel-info">
+                              <div class="panel-heading"><?=$ruleGroup ?>
+                                  <label class="pull-right"><input type="checkbox" class="js-rule-all">全选</label>
+                              </div>
+                              <div class="panel-body">
+                                <div class="checkbox">
+                                <?php foreach ($rule as $v): ?>
+                                    <label style="min-width:200px;">
+                                        <input type="checkbox" name="rule[]" value="<?=$rulesNameId[$v['name']] ?>" <?=isset($detail['rules'])&&in_array($rulesNameId[$v['name']], $detail['rules'])?'checked':'' ?>> <?=$v['title'] ?>
+                                    </label>
+                                <?php endforeach; ?>
+                                </div>
+                              </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <input type="hidden" name="id" value="{$id}" {$id ? '' : 'disabled'}>
+                            <button type="button" class="btn btn-default pull-right" onclick="history.back()">返回</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+var requsetUrl = {
+    lists : "{:url('groupLists')}"
+};
+    $("#inputRule").select2();
+    // init_icheck($('form[data-pjax] :radio'))
+    $('form :checkbox[name=status]').bootstrapSwitch({
+        onColor : 'success',
+        offColor: 'danger'
+    })
+
+    $(function(){
+        init_icheck($('form :checkbox:not([name=status])'))
+
+        $(".js-rule-all").on('ifClicked', function(){
+            var param = $(this).prop('checked') ? 'uncheck' : 'check';
+            $(this).closest('.panel').children('.panel-body').find(':checkbox').iCheck(param);
+        })
+
+        $('form :submit').on('click', function(event){
+            event.preventDefault();
+            var $form = $(this).closest('form');
+            $.post($form.attr('action'), $form.serializeArray(), function(res){
+                if (res.code) {
+                    bayMax.msg(res.msg, function(){
+                        {literal}
+                        $.pjax({ url: requsetUrl.lists, container: '#pjax-container'})
+                        {/literal}
+                    })
+                } else {
+                    bayMax.warning(res.msg)
+                }
+            })
+        })
+    })
+</script>
