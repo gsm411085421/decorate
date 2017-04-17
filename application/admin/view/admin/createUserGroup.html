@@ -68,7 +68,7 @@ var requsetUrl = {
     })
 
     $(function(){
-        init_icheck($('form :checkbox:not([name=status])'))
+        bayMax.pluginInit.icheck('form :checkbox:not([name=status])')
 
         $(".js-rule-all").on('ifClicked', function(){
             var param = $(this).prop('checked') ? 'uncheck' : 'check';

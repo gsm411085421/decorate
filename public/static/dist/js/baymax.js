@@ -214,7 +214,7 @@ var bayMax = {
     // 是否重载页面
     reload = typeof reload != 'undefined' ? reload : true;
     if (reload) {
-      $modal.on('hidden.bs.modal', function(){
+      $modal.one('hidden.bs.modal', function(){
         $.pjax.reload('#pjax-container');
       });
     }
