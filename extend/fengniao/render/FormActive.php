@@ -212,8 +212,7 @@ class FormActive
     {
         $class = $class ? 'class="'. $class. '"' :'';
         $attr = self::_formatAttr($attr);
-
-        $checkedValue = isset(self::$data[$name]) ? self::$data[$name] : [];
+        $checkedValue = isset(self::$data[$name])&&is_array(self::$data[$name]) ? self::$data[$name] : [];
         $checked = '';
 
         $html = '<div class="checkbox" '. $attr .'>'."\n";

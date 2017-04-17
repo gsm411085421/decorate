@@ -1,0 +1,36 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <form action="<?=url('cateEdit') ?>" method="POST" class="form-horizontal" role="form">
+        <?=$form ?>
+        <div class="form-group">
+            <label for="fieldStatus" class="col-sm-2 control-label">是否显示</label>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="fieldStatus" name="status" value="1" <?=$exists&&$detail['status']?'checked':'' ?>>
+                        显示
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+                <?php if ($exists && $detail['id']): ?>
+                    <input type="hidden" name="id" value="<?=$detail['id'] ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn btn-primary btn-flat" onclick="bayMax.submitClick(this)">保存</button>
+                <button type="button" class="btn btn-default col-sm-offset-2 btn-flat" onclick="history.back(-1)">返回</button>
+            </div>
+        </div>
+    </form>
+</section>
+<script>
+    $(function(){
+        bayMax.pluginInit.icheck(':checkbox')
+    })
+</script>
