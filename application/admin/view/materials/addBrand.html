@@ -1,0 +1,79 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <form action="<?=url('addBrand') ?>" method="POST" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">品牌名称</label>
+            <div class="col-sm-8">
+                <input type="text" name="name" id="inputName" class="form-control" value="<?=$exists?$detail['name']:'' ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputLogo" class="col-sm-2 control-label">Logo</label>
+            <div class="col-sm-8">
+                <img src="<?=$exists?$detail['logo']:'/static/dist/img/add-img.png' ?>" id="img-upload" class="img-thumbnail" alt="Image" width="100">
+                <input type="hidden" name="logo" id="hidden-logo" value="<?=$exists?$detail['logo']:'' ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputSorted" class="col-sm-2 control-label">排序值</label>
+            <div class="col-sm-8">
+                <input type="number" name="sorted" id="inputSorted" class="form-control" value="<?=$exists?$detail['sorted']:'' ?>" max="255">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input" class="col-sm-2 control-label">显示在首页</label>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="is_on_home" value="1" <?=$exists&&$detail['is_on_home']?'checked':'' ?>>
+                        是
+                    </label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+                <?php if ($cateId): ?>
+                    <input type="hidden" name="cate_id" value="<?=$cateId ?>">
+                <?php endif; ?>
+                <?php if ($exists && $detail['id']): ?>
+                    <input type="hidden" name="id" value="<?=$detail['id'] ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn btn-primary btn-flat" onclick="formSubmit(this)">提交</button>
+                <button type="button" class="btn btn-default btn-flat col-sm-offset-2" onclick="history.back(-1)">返回</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script>
+    $("#img-upload").on('click', function(){
+        var $obj = $(this);
+        bayMax.uploadImg(function(res){
+            if (res.code) {
+                var src = '/uploads/'+res.data.savename.replace('\\', '/');
+                $obj.attr('src', src)
+                $("#hidden-logo").val(src)
+            }
+        });
+    })
+
+    /** 提交表单 */
+    function formSubmit(obj) {
+        bayMax.submitClick(obj, function(data){
+            if ($('[name=is_on_home]').prop('checked') == false) {
+                data.push({name:'is_on_home', value:0})
+            }
+        });
+    }
+
+    $(function(){
+        bayMax.pluginInit.icheck(':checkbox')
+    })
+</script>

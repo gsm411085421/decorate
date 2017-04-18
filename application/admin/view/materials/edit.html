@@ -1,0 +1,211 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="nav-tabs-custom" style="padding-bottom: 10px;">
+        <form action="<?=url('edit') ?>" method="POST" class="form-horizontal" role="form">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">基本信息</a></li>
+              <li><a href="#tab_2" data-toggle="tab">详情</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1" style="padding:10px 0;">
+                  <?=$form ?>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">封面</label>
+                      <div class="col-sm-8">
+                          <img src="<?=$exists?$detail['cover']:'/static/dist/img/add-img.png' ?>" class="img-thumbnail" alt="Image" width="100" onclick="uploadImg(this)">
+                          <input type="hidden" name="cover" value="<?=$exists?$detail['cover'] : '' ?>">
+                      </div>
+                  </div>
+              </div>
+              <div class="tab-pane" id="tab_2" style="padding:10px 0;">
+              <?php if ($exists) :foreach ($detail->detail as $k => $item): ?>
+                <div class="js-detail-block">
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">标题</label>
+                      <div class="col-sm-8">
+                          <input type="text" name="detail[title][<?=$k ?>]" class="form-control" value="<?=$item['title'] ?>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">摘要</label>
+                      <div class="col-sm-8">
+                          <input type="text" name="detail[summary][<?=$k ?>]" class="form-control" value="<?=$item['summary'] ?>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">封面</label>
+                      <div class="col-sm-8">
+                          <img src="<?=$item['cover']? : '/static/dist/img/add-img.png' ?>" class="img-thumbnail" alt="Image" width="100" onclick="uploadImg(this)">
+                          <input type="hidden" name="detail[cover][<?=$k ?>]" value="<?=$item['cover'] ?>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">排序值</label>
+                      <div class="col-sm-8">
+                          <input type="number" name="detail[sorted][<?=$k ?>]" class="form-control" value="<?=$item['sorted'] ?>" max="255" placeholder="介于 0 ~ 255 之间">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-sm-10">
+                          <div class="btn-group pull-right">
+                              <button type="button" class="btn btn-success btn-flat btn-sm" onclick="detailBlockAdd(this)">添加一条</button>
+                              <?php if ($k != 0): ?>
+                              <button type="button" class="btn btn-danger btn-flat btn-sm" onclick="detailBlockDelete(this)">删除</button>
+                              <?php endif; ?>
+                          </div>
+                      </div>
+                  </div>
+                  <hr>
+              <?php endforeach; else : ?>
+                <div class="js-detail-block">
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">标题</label>
+                      <div class="col-sm-8">
+                          <input type="text" name="detail[title][]" class="form-control" value="">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">摘要</label>
+                      <div class="col-sm-8">
+                          <input type="text" name="detail[summary][]" class="form-control" value="">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">封面</label>
+                      <div class="col-sm-8">
+                          <img src="/static/dist/img/add-img.png" class="img-thumbnail" alt="Image" width="100" onclick="uploadImg(this)">
+                          <input type="hidden" name="detail[cover][]" value="">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="" class="col-sm-2 control-label">排序值</label>
+                      <div class="col-sm-8">
+                          <input type="number" name="detail[sorted][]" class="form-control" value="" max="255" placeholder="介于 0 ~ 255 之间">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-sm-10">
+                          <div class="btn-group pull-right">
+                              <button type="button" class="btn btn-success btn-flat btn-sm" onclick="detailBlockAdd(this)">添加一条</button>
+                              <!-- <button type="button" class="btn btn-danger btn-flat btn-sm" onclick="detailBlockDelete(this)">删除</button> -->
+                          </div>
+                      </div>
+                  </div>
+                  <hr>
+              <?php endif; ?>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <button type="submit" class="btn btn-primary btn-flat" onclick="bayMax.submitClick(this)">提交</button>
+                    <button type="button" class="btn btn-default btn-flat col-sm-offset-2" onclick="history.back(-1)">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<script>
+    var requestUrl = {
+        getBrand : "<?=url('api/getBrand') ?>",
+        getSeries : "<?=url('api/getSeries') ?>"
+    };
+    /** 添加详情块 */
+    function detailBlockAdd(obj) {
+        $("#tab_2").append(View.detailBlock)
+    }
+
+    /** 删除详情块 */
+    function detailBlockDelete(obj) {
+        $(obj).closest('.js-detail-block').remove();
+    }
+
+    /** 上传图片 */
+    function uploadImg(obj) {
+        var $obj = $(obj);
+        bayMax.uploadImg(function(res){
+            if (res.code) {
+                var src = '/uploads/'+res.data.savename.replace('\\', '/');
+                $obj.attr('src', src)
+                $obj.siblings(':hidden').val(src)
+            }
+        });
+    }
+
+    $(function(){
+        /** 分类切换 */
+        $('form').on('change', '#InputCate_id', function(){
+            var cateId = $(this).val();
+            if (cateId) {
+                $.get(requestUrl.getBrand, {cateId:cateId}, function(res){
+                    if (res) {
+                        $("#InputBrand_id").html(buildOptions(res, 'name', 'id'))
+                    }
+                }, 'json');
+            }
+        })
+        /** 品牌切换 */
+        $('form').on('change', '#InputBrand_id', function(){
+            var brandId = $(this).val();
+            if (brandId) {
+                $.get(requestUrl.getSeries, {brandId:brandId}, function(res){
+                    if (res) {
+                        $("#InputSeries_id").html(buildOptions(res, 'name', 'id'))
+                    }
+                }, 'json');
+            }
+        });
+    })
+
+    function buildOptions(objData, keyName, valName) {
+        var html = '<option value="0">请选择</option>';
+        $.each(objData, function(index, item){
+            html += '<option value="'+item[valName]+'">'+item[keyName]+'</option>';
+        });
+        return html;
+    }
+
+    var View = {
+        detailBlock : '<div class="js-detail-block">\
+                  <div class="form-group">\
+                      <label for="" class="col-sm-2 control-label">标题</label>\
+                      <div class="col-sm-8">\
+                          <input type="text" name="detail[title][]" class="form-control" value="">\
+                      </div>\
+                  </div>\
+                  <div class="form-group">\
+                      <label for="" class="col-sm-2 control-label">摘要</label>\
+                      <div class="col-sm-8">\
+                          <input type="text" name="detail[summary][]" class="form-control" value="">\
+                      </div>\
+                  </div>\
+                  <div class="form-group">\
+                      <label for="" class="col-sm-2 control-label">封面</label>\
+                      <div class="col-sm-8">\
+                          <img src="/static/dist/img/add-img.png" class="img-thumbnail" alt="Image" width="100" onclick="uploadImg(this)">\
+                          <input type="hidden" name="detail[cover][]" value="">\
+                      </div>\
+                  </div>\
+                  <div class="form-group">\
+                      <label for="" class="col-sm-2 control-label">排序值</label>\
+                      <div class="col-sm-8">\
+                          <input type="number" name="detail[sorted][]" class="form-control" value="" max="255" placeholder="介于 0 ~ 255 之间">\
+                      </div>\
+                  </div>\
+                  <div class="form-group">\
+                      <div class="col-sm-10">\
+                          <div class="btn-group pull-right">\
+                              <button type="button" class="btn btn-success btn-flat btn-sm" onclick="detailBlockAdd(this)">添加一条</button>\
+                              <button type="button" class="btn btn-danger btn-flat btn-sm" onclick="detailBlockDelete(this)">删除</button>\
+                          </div>\
+                      </div>\
+                  </div>\
+                  <hr>\
+                </div>',
+    };
+</script>

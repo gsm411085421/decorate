@@ -24,7 +24,7 @@ return [
     ],
     // 操作开始执行
     'action_begin' => [
-        'app\\admin\\behavior\\AuthCheck', // 权限认证
+        // 'app\\admin\\behavior\\AuthCheck', // 权限认证
     ],
     // 视图内容过滤
     'view_filter'  => [],
