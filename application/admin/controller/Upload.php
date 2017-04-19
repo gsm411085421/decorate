@@ -5,7 +5,9 @@ use app\common\controller\Upload as BaseUpload;
 use think\Request;
 
 class Upload extends BaseUpload
-{
+{   
+    
+    
     /**
      * 图片上传
      * @param  string $fieldName 表单字段 name
@@ -20,7 +22,7 @@ class Upload extends BaseUpload
                 'filename' => $info->getFileName(),
                 'savename' => $info->getSaveName()
             ];
-            $res = ['code'=>1, 'data'=>$data];
+            $res = ['code'=>1, 'data'=>config('img_save_url').str_replace('\\', '/', $data['savename'])];
         } else {
             $res = ['code'=>0, 'msg'=>$info ? : '上传失败了'];
         }
