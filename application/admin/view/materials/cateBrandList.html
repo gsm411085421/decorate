@@ -1,0 +1,66 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-success btn-sm btn-flat" href="<?=url('addBrand', ['cate_id'=>$cateId]) ?>" role="button">添加品牌</a>
+            <button type="button" class="btn btn-default btn-sm btn-flat pull-right" onclick="history.back(-1)">返回</button>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>品牌名</th>
+                        <th>Logo</th>
+                        <th>排序值</th>
+                        <th>是否在首页显示</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['brand_id'] ?></td>
+                        <td><?=$v->brand->name ?></td>
+                        <td><img src="<?=$v->brand->logo ?>" alt="" width="30"></td>
+                        <td><?=$v->brand->sorted ?></td>
+                        <td>
+                            <?php if ($v->brand->is_on_home): ?>
+                                <span class="label label-success">显示</span>
+                            <?php else: ?>
+                                <span class="label label-default">不显示</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-sm btn-flat" href="<?=url('addBrand', ['cate_id'=>$v['cate_id'], 'id'=>$v->brand->id]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="itemDelete(this, <?=$v['brand_id'] ?> ?>')">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+    var requestUrl = {
+        delete : "<?=url('brandDelete') ?>"
+    };
+    /** 删除 */
+    function itemDelete(obj, id) {
+        bayMax.trDelete(obj, id, requestUrl.delete, function(res){
+            if (res.code) {
+                $(obj).closest('tr').remove();
+            } else {
+                bayMax.warning(res.msg);
+            }
+        })
+    }
+</script>

@@ -1,0 +1,59 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-success btn-sm btn-flat" href="<?=url('seriesEdit', ['brand_id'=>$brandId]) ?>" role="button">添加系列</a>
+            <button type="button" class="btn btn-default btn-sm btn-flat pull-right" onclick="history.back(-1)">返回</button>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>系列名称</th>
+                        <th>排序值</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['name'] ?></td>
+                        <td><?=$v['sorted'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-sm btn-flat" href="<?=url('seriesEdit', ['id'=>$v['id'], 'brand_id'=>$brandId]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="bayMax.itemDelete(this, <?=$v['id'] ?>)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <?=$data->render() ?>
+        </div>
+    </div>
+</section>
+<script>
+    var requestUrl = {
+        delete : "<?=url('seriesDelete') ?>"
+    };
+    /** 删除 */
+    function itemDelete(obj, id) {
+        bayMax.trDelete(obj, id, requestUrl.delete, function(res){
+            if (res.code) {
+                $(obj).closest('tr').remove();
+            } else {
+                bayMax.warning(res.msg);
+            }
+        })
+    }
+</script>

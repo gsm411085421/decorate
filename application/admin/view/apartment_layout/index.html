@@ -7,73 +7,47 @@
 <section class="content">
     <div class="box">
         <div class="box-header">
-            <a class="btn btn-primary" data-toggle="modal" href='#modal-add-estate'>添加楼盘</a>
             
         </div>
         <div class="box-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>楼盘名称</th>
-                        <th>操作</th>
+                        <th>户型名称</th>
+                        <th>墙面面积(㎡)</th>
+                        <th>地面面积(㎡)</th>
+                        <th>顶面面积(㎡)</th>
+                        <th>周长(m)</th>
+                        <th>总面积(㎡)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {foreach $data as $v}
-                   <tr>
-                       <td>{$v.name}</td>
-                       <td>
-                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="update({$v.id})">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                           <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="bayMax.trDelete(this, <?=$v['id'] ?>, '{:url('Estate/EstateDeleteOne')}')">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                       </td>
-                   </tr>
-                   {/foreach}
+                    <tr>
+                        <td>{$v.name}</td>
+                        <td><input type="number" name="wall_area" class="form-control input-xs" value="{$v.wall_area}" onblur="update_value(this,{$v.id})"></td>
+                        <td><input type="number" name="floor_area" class="form-control input-xs" value="{$v.floor_area}" onblur="update_value(this,{$v.id})"></td>
+                        <td><input type="number" name="top_area" class="form-control input-xs" value="{$v.top_area}" onblur="update_value(this,{$v.id})"></td>
+                        <td><input type="number" name="perimeter" class="form-control input-xs" value="{$v.perimeter}" onblur="update_value(this,{$v.id})"></td>
+                        <td><input type="number" name="total_area" class="form-control input-xs" value="{$v.total_area}" onblur="update_value(this,{$v.id})"></td>
+                    </tr>
+                    {/foreach}
                 </tbody>
             </table>
         </div>
     </div>
 </section>
-<div class="modal fade" id="modal-add-estate">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{:url('Estate/estateEdit')}" method="POST" class="form-horizontal" role="form" id="form-add-estate">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">编辑楼盘</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="field-name" class="col-sm-2">楼盘名称</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="name" id="field-name" class="form-control" value="" placeholder="请输入楼盘名称">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="bayMax.modalSubmitClick(this)">保存</button>
-                </div>
-                <input type="hidden" name="id" value="">
-            </form>
-        </div>
-    </div>
-</div>
 <script>
-    $('#modal-add-estate').on('hidden.bs.modal', function(){
-        $('#form-add-estate')[0].reset();
-        $('#form-add-estate [name=id]').val('');
-    });
-    function update (id){
-        $.get("{:url('Estate/estateEdit')}",{id:id}, function(re){
-            if (re) {
-                $('#field-name').val(re.name);
-                $('#form-add-estate [name=id]').val(re.id);
+    var requestUrl = {
+        setField: "{:url('ApartmentLayout/updateField')}",
+    };
+    function update_value (obj, id){
+        var field = $(obj).attr('name');
+        var value = $(obj).val();
+        $.post(requestUrl.setField, {id:id,field:field,value:value}, function (re){
+            if (re !== 0 && !re){
+                bayMax.warning('保存失败');
             }
         });
-        $('#modal-add-estate').modal('show');
     }
 </script>

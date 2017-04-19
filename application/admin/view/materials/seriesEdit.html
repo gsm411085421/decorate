@@ -1,0 +1,28 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <form action="<?=url('seriesEdit') ?>" method="POST" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputBrand" class="col-sm-2 control-label">品牌</label>
+            <div class="col-sm-8">
+                <input type="text" name="brand" id="inputBrand" class="form-control" value="<?=$brandInfo['name'] ?>" disabled>
+            </div>
+        </div>
+        <?=$form ?>
+    
+        <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-2">
+                <?php if (isset($detail['id']) && $detail['id']): ?>
+                    <input type="hidden" name="id" value="<?=$detail['id'] ?>">
+                <?php endif; ?>
+                <input type="hidden" name="brand_id" value="<?=$brandInfo['id'] ?>">
+                <button type="submit" class="btn btn-primary btn-flat btn-sm" onclick="bayMax.submitClick(this)">保存</button>
+                <button type="button" class="btn btn-default btn-flat btn-sm col-sm-offset-2" onclick="history.back(-1)">返回</button>
+            </div>
+        </div>
+    </form>
+</section>

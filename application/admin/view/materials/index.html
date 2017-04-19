@@ -1,0 +1,81 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-success btn-sm btn-flat" href="<?=url('edit') ?>" role="button">添加主材</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>分类</th>
+                        <th>品牌</th>
+                        <th>系列</th>
+                        <th>标题</th>
+                        <th>单价</th>
+                        <th>单位</th>
+                        <th>显示</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td>{$cate[$v['cate_id']] ?? ''}</td>
+                        <td>{$brand[$v['brand_id']] ?? ''}</td>
+                        <td>{$series[$v['series_id']] ?? ''}</td>
+                        <td><?=$v['title'] ?></td>
+                        <td><?=$v['price'] ?></td>
+                        <td><?=$v['unit'] ?></td>
+                        <td>
+                            <?php if ($v['status']): ?>
+                                <span class="label label-success" onclick="setStatus(this, <?=$v['id'] ?>, 0)" style="cursor: pointer;">显示中</span>
+                            <?php else: ?>
+                                <span class="label label-default" onclick="setStatus(this, <?=$v['id'] ?>, 1)" style="cursor: pointer;">未显示</span>
+                            <?php endif; ?>
+                        </td>
+                        <td><?=$v['create_at'] ?></td>
+                        <td><?=$v['update_at'] ?></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-sm btn-flat" href="<?=url('edit', ['id'=>$v['id']]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat" onclick="bayMax.trDelete(this, <?=$v['id'] ?>, '<?=url('materailsDelete') ?>')">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <?=$data->render() ?>
+        </div>
+    </div>
+</section>
+<script>
+    var requestUrl = {
+        setStatus : "<?=url('materailsStatus') ?>"
+    };
+
+    /** 设置状态 */
+    function setStatus(obj, id, value) {
+        $.post(requestUrl.setStatus, {id:id, value:value}, function(res){
+            if (res) {
+                if (value) {
+                    $(obj).addClass('label-success').removeClass('label-default').text('显示中').attr('onclick', 'setStatus(this, '+id+', 0)')
+                } else {
+                    $(obj).removeClass('label-success').addClass('label-default').text('未显示').attr('onclick', 'setStatus(this, '+id+', 1)')
+                }
+            }
+        });
+    }
+</script>
