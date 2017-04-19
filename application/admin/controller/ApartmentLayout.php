@@ -24,4 +24,47 @@ class ApartmentLayout extends Base
     {
         return parent::model('ApartmentLayout')->updateField();
     }
+
+    /**
+     * 区域
+     * @return [type] [description]
+     */
+    public function usageArea ()
+    {
+        $data = parent::model('UsageArea')->getAll();
+        $this->view->desc = '使用区域';
+        return $this->fetch('usageArea', ['data'=>$data]);
+    }
+
+    /**
+     * 使用区域编辑
+     * @return [type] [description]
+     */
+    public function usageEdit()
+    {
+        if ($this->request->isGet()){
+            return parent::model('UsageArea')->getOne($this->request->get('id'));
+        } else {
+            return parent::model('UsageArea')->edit();
+        }
+    }
+
+    /**
+     * 删除
+     * @return [type] [description]
+     */
+    public function usageDeleteOne ()
+    {
+        return parent::model('UsageArea')->deleteOne($this->request->post('id'));
+    }
+
+    /**
+     * 设置显示状态
+     * @return [type] [description]
+     */
+    public function usageStatus()
+    {
+        $post = $this->request->post();
+        return parent::model('UsageArea')->setStatus($post['value'], ['id'=>$post['id']]);
+    }
 }

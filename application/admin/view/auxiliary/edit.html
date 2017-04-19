@@ -21,6 +21,7 @@
                           <input type="hidden" name="cover" value="<?=$exists?$detail['cover'] : '' ?>">
                       </div>
                   </div>
+                  <input type="hidden" name="id" value="<?=$exists?$detail['id'] : ''?>">
               </div>
               <div class="tab-pane" id="tab_2" style="padding:10px 0;">
               <?php if ($exists) :foreach ($detail->detail as $k => $item): ?>

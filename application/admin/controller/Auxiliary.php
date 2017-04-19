@@ -3,6 +3,7 @@
  * 辅材
  */
 namespace app\admin\controller;
+use fengniao\render\FormActive;
 
 class Auxiliary extends Base
 {
@@ -27,7 +28,7 @@ class Auxiliary extends Base
         $request = $this->request;
 
         if ($request->isPost()) {
-            return $model->editMaterials($request->post());
+            return $model->editAuxiliary($request->post());
         }
 
         $detail = [];
@@ -35,7 +36,7 @@ class Auxiliary extends Base
             $detail    = $model->getOne($id);
         }
 
-        $form = FormActive::render($model::getAttributes($cateId, $brandId), $detail);
+        $form = FormActive::render($model::setAttributes(), $detail);
 
         $this->view->desc = '编辑辅材';
         return $this->fetch('', [
@@ -43,5 +44,24 @@ class Auxiliary extends Base
             'detail' => $detail,
             'exists' => !empty($detail)
         ]);
+    }
+
+    /**
+     * 删除主材
+     * @return [type] [description]
+     */
+    public function auxiliaryDelete()
+    {
+        return parent::model('Auxiliary')->deleteOne($this->request->post('id'));
+    }
+
+    /**
+     * 设置显示状态
+     * @return [type] [description]
+     */
+    public function auxiliaryStatus()
+    {
+        $post = $this->request->post();
+        return parent::model('Auxiliary')->setStatus($post['value'], ['id'=>$post['id']]);
     }
 }

@@ -43,4 +43,14 @@ class Estate extends Base
     {
         return parent::model()->deleteOne($this->request->post('id'));
     }
+
+    /**
+     * 设置显示状态
+     * @return [type] [description]
+     */
+    public function estateStatus()
+    {
+        $post = $this->request->post();
+        return parent::model('Estate')->setStatus($post['value'], ['id'=>$post['id']]);
+    }
 }
