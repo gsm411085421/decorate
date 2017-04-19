@@ -54,6 +54,48 @@
         </tbody>
       </table>
     </div>
+    <div class="box-footer">
+      <div class="form-group">
+          <div class="col-sm-8 col-sm-offset-2">
+              <button onclick="javascript:history.back(-1);" type="button" class="btn btn-default pull-right" data-dismiss="modal">返回</button>
+          </div>
+      </div>
+    </div>
 </div>
-
 </section>
+
+<script type="text/javascript">
+
+    var requestUrl = {
+      delete : "{:url('DesignerProduce/deleteProduce')}",
+      changeStatus : "{:url('DesignerProduce/changeStatus')}"
+    }
+
+    var handle = {
+
+       delete : function(obj,id){
+        bayMax.deleteConfirm(function(e){
+          $.post(requestUrl.delete,{id:id},function(e){
+            if(e.code==1){
+              $(obj).parents('tr').remove();
+            }
+          })
+        });
+      },
+      
+      changeStatus : function(obj,id,status){
+        var status = (status===1) ? 0 : 1 ;
+        $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+            if(e==1){
+               if(status==0){
+                  $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+               }else{
+                   $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">开启</span>');
+               }
+            }
+        })
+      },
+
+    }
+
+</script>

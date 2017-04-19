@@ -9,7 +9,7 @@
 <div class="box">
     <div class="box-header">
       <div class="box-header with-border">
-            <a href="{:url('Goods/addGoods')}"><button class="btn btn-primary"  type="button">添加图片</button></a>
+            <a href="{:url('DesignerProduceImg/addImg',['produce_id'=>$produce_id])}"><button class="btn btn-primary"  type="button">添加图片</button></a>
       </div>
     </div>
     <div class="box-body">
@@ -25,7 +25,7 @@
              <td>{$i}</td>
              <td><img src="{$v.img_url}" style="width: 66px; height: 60px;"></td>
              <td>
-                <a href="{:url('Goods/editGoods',['id'=>$v['id']])}">
+                <a href="{:url('DesignerProduceImg/editImg',['id'=>$v['id']])}">
                     <button type="button" class="btn btn-primary" onclick="">
                     <i class="fa fa-edit"></i>
                     </button>
@@ -39,6 +39,35 @@
         </tbody>
       </table>
     </div>
+     <div class="box-footer">
+      <div class="form-group">
+          <div class="col-sm-8 col-sm-offset-2">
+              <button onclick="javascript:history.back(-1);" type="button" class="btn btn-default pull-right" data-dismiss="modal">返回</button>
+          </div>
+      </div>
+    </div>
 </div>
 
 </section>
+
+<script type="text/javascript">
+    
+    var requestUrl = {
+      delete : "{:url('DesignerProduceImg/deleteImg')}",
+    }
+
+    var handle = {
+
+       delete : function(obj,id){
+        bayMax.deleteConfirm(function(e){
+          $.post(requestUrl.delete,{id:id},function(e){
+            if(e==1){
+              $(obj).parents('tr').remove();
+            }
+          })
+        });
+      },
+
+    }
+
+</script>

@@ -1,6 +1,8 @@
 <?php  
 namespace app\admin\controller;
 
+use think\Loader;
+
 class Designer extends Base
 {   
     protected $header = '设计师';
@@ -13,7 +15,7 @@ class Designer extends Base
     {   
         $this->view->desc = '设计师' ;
         $where = $config = [];
-        $data = parent::model()->getPaginate($where,$config);
+        $data = parent::model()->getPaginate($where,true,null,$config);
         return $this->fetch('',['list'=>$data]);
     }
 
@@ -22,6 +24,7 @@ class Designer extends Base
      */
     public function addDesigner()
     {    
+        $this->view->desc = '添加设计师' ;
         if($this->request->isPost()){
             $input = $this->request->post(); 
             return parent::model()->edit($input);
@@ -34,6 +37,7 @@ class Designer extends Base
      */
     public function editDesigner($id)
     {    
+        $this->view->desc = '编辑设计师' ;
         $data = parent::model()->getOne($id);
         if($this->request->isPost()){
             $input = $this->request->post(); 
@@ -43,14 +47,20 @@ class Designer extends Base
     }
 
     /**
-     * 删除设计师
+     * 删除设计师、作品集、图片
      * @return [type] [description]
      */
     public function deleteDesigner()
     {
         if($this->request->isPost()){
             $id = $this->request->param('id');
-            return parent::model()->deleteOne($id);
+            $deleteDesigner = Loader::model('DesignerProduce');
+            $data1 = self::model()->showDesignerProduce($id);
+            $produce = $data1[0]['produce_designer'];
+            foreach ($produce as $key => $value) {
+                $deleteDesigner->deleteProduce($value['id']);
+            }
+            return parent::model()->deleteOne($id);;
         }
     }
 

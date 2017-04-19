@@ -74,7 +74,7 @@
         }
         dom.fileinput(param).on('fileuploaded', function(event, file, previewId, index, reader) {
             if(file.response.code){
-                filePath.goodsImage = file.response.data.savename;
+                filePath.goodsImage = file.response.data;
             }else{
                 bayMax.warning(file.response.msg);
             }

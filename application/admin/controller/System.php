@@ -24,6 +24,7 @@ class System extends Base
     {
         if($this->request->isPost()){
             $input = $this->request->post();
+            $input['about_us'] = html_entity_decode($input['about_us']);
             $systemConfig = new SystemConfig();
             $data = $systemConfig->update($input);
             if($data){
