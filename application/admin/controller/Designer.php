@@ -15,7 +15,17 @@ class Designer extends Base
     {   
         $this->view->desc = '设计师' ;
         $where = $config = [];
-        $data = parent::model()->getPaginate($where,true,null,$config);
+        if($this->request->isGet() && $this->request->has('query')){
+            $get = $this->request->get();
+            if(isset($get['status']) && $get['status'] != -1 ){
+                $where['status'] = $config['query']['status'] = $get['status'];
+            }
+            if(isset($get['search'])){
+                $where['name'] = ['like','%'.$get['search'].'%'];
+                $config['query']['search'] = $get['search'];
+            }
+        }
+        $data = parent::model()->showDesigner($where,null,$config);
         return $this->fetch('',['list'=>$data]);
     }
 

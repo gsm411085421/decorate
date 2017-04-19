@@ -28,7 +28,7 @@
           $.post("{:url('System/update')}",{about_us:about_us},function(e){
             if(e.code==1){
                 bayMax.msg(e.msg,function(e){
-                  $.pjax({ url: "{:url('System/index')}" , container: '#pjax-container'});
+                  $.pjax({ url: "{:url('System/usIntroduce')}" , container: '#pjax-container'});
                 });                      
             }else{
                 bayMax.warning(e.msg);

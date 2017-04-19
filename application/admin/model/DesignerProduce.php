@@ -5,15 +5,18 @@ use think\Loader;
 
 class DesignerProduce extends Base
 {
-        
+    
+     protected $pageSize = 20;
+
     /**
      * 根据设计者id查询作品集
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    public function showProduce($id)
-    {
-        return $this->field(true)->where('designer_id',$id)->select();
+    public function showProduce(array $where,$pageSize = null,$config)
+    {   
+        $pageSize = $pageSize ? : $this->pageSize;
+        return $this->where($where)->field(true)->paginate($pageSize,false,$config);
     }
 
     /**

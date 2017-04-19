@@ -10,7 +10,7 @@
     <div class="box-header">
       <div class="box-header with-border">
             <a href="{:url('Designer/addDesigner')}"><button class="btn btn-primary"  type="button">添加设计师</button></a>
-             <form action="{:url('Goods/goodsManage',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
+             <form action="{:url('Designer/index',['query'=>1])}" method="get" class="form-inline pull-right" role="form" data-pjax>
                     <div class="form-group">
                         <select name="status" class="form-control input-sm">
                             <option value="-1">全部</option>
@@ -33,7 +33,7 @@
           <th>头像</th>
           <th>级别</th>
           <th>简介</th>
-          <th>更新时间</th>
+          <th>创建时间</th>
           <th>状态</th>
           <th>操作</th>
         </thead>
@@ -47,7 +47,7 @@
             </td>
             <td>{$v.rank}</td>
             <td>{$v.introduce}</td>
-            <td>{$v.update_at}</td>
+            <td>{$v.create_at}</td>
             <td>
                 {eq name="v.status" value="1"}
                 <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">开启</span>
@@ -74,6 +74,9 @@
           {/volist}
         </tbody>
       </table>
+    </div>
+    <div class="box-footer">
+      <div style="text-align: right;">{$list->render()}</div>
     </div>
 </div>
 

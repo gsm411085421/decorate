@@ -12,7 +12,7 @@ class System extends Base
      * 网站介绍
      * @return [type] [description]
      */
-    public function index()
+    public function usIntroduce()
     {   
         $this->view->desc = '网站介绍';
         $systemConfig = new SystemConfig();
@@ -20,11 +20,30 @@ class System extends Base
         return $this->fetch('',['data'=>$data]);
     }
 
+    /**
+     * 网站信息
+     * @return [type] [description]
+     */
+    public function usInfo()
+    {
+        $this->view->desc = '网站信息';
+        $systemConfig = new SystemConfig();
+        $data = $systemConfig->data();
+        return $this->fetch('',['data'=>$data]);
+    }
+
+    /**
+     * 更新系统配置
+     * @return [type] [description]
+     */
     public function update()
     {
         if($this->request->isPost()){
             $input = $this->request->post();
-            $input['about_us'] = html_entity_decode($input['about_us']);
+            foreach ($input as $key => $value) {
+                $data = html_entity_decode($value);
+                $input[$key]=$data;
+            }
             $systemConfig = new SystemConfig();
             $data = $systemConfig->update($input);
             if($data){

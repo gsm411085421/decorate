@@ -2,7 +2,20 @@
 namespace app\admin\model;
 
 class Designer extends Base
-{   
+{     
+    protected $pageSize = 20;
+    /**
+     * 显示设计者
+     * @param  array   $where    [description]
+     * @param  integer $pageSize [description]
+     * @param  array   $config   [description]
+     * @return [type]            [description]
+     */
+    public function showDesigner(array $where,$pageSize=null,array $config)
+    {   
+        $pageSize = $pageSize ? : $this->pageSize;
+        return $this->where($where)->field(true)->paginate($pageSize,false,$config);
+    }
     /**
      * 关联作品集表
      * @return [type] [description]
