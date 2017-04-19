@@ -37,6 +37,12 @@
   <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
 
   <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+
+
+  <script src="/static/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
+  <script src="/static/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -312,12 +318,23 @@
           </ul>
         </li>
         <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>设计师</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="{:url('Designer/index')}"><i class="fa fa-circle-o"></i> <span>设计师</span></a></li>
+          </ul>
+        </li>
+        <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>系统设置</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="{:url('System/index')}"><i class="fa fa-circle-o"></i> <span>网站介绍</span></a></li>
             <li><a href="{:url('Test/index')}"><i class="fa fa-circle-o"></i> <span>测试</span></a></li>
             <li><a href="{:url('Test/editor')}"><i class="fa fa-circle-o"></i> <span>测试 wysihtml5</span></a></li>
             <li><a href="{:url('Goods/add')}"><i class="fa fa-circle-o"></i> <span>添加商品</span></a></li>
@@ -451,8 +468,7 @@
 <script src="/static/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/static/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/static/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+
 <script src="/static/plugins/select2/select2.full.min.js"></script>
 <script src="/static/plugins/pace/pace.min.js"></script>
 <script src="/static/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>

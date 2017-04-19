@@ -1,0 +1,101 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+
+<div class="box">
+    <div class="box-header">
+      <div class="box-header with-border">
+            <a href="{:url('DesignerProduce/addProduce',['designer_id'=>$designer_id])}"><button class="btn btn-primary"  type="button">添加作品集</button></a>
+      </div>
+    </div>
+    <div class="box-body">
+      <table class="table table-border table-hover">
+        <thead>
+          <th>序号</th>
+          <th>作品名字</th>
+          <th>作品简介</th>
+          <th>状态</th>
+          <th>操作</th>
+        </thead>
+        <tbody>
+          {volist name='list' id='v'}
+            <tr>
+              <td>{$i}</td>
+              <td>{$v.name}</td>
+              <td>{$v.introduce}</td>
+              <td>
+                {eq name="v.status" value="1"}
+                <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">开启</span>
+                {else/}
+                <span class="label label-default" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">禁用</span>
+                {/eq}
+              </td>
+              <td>
+                <a href="{:url('DesignerProduceImg/index',['id'=>$v['id']])}">
+                    <button type="button" class="btn btn-primary">
+                    查看作品图集
+                    </button>
+                </a>
+                <a href="{:url('DesignerProduce/editProduce',['id'=>$v['id']])}">
+                    <button type="button" class="btn btn-primary" onclick="">
+                    <i class="fa fa-edit"></i>
+                    </button>
+                </a>
+                <button type="button" class="btn btn-danger" onclick="handle.delete(this,{$v.id});">
+                <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          {/volist}
+        </tbody>
+      </table>
+    </div>
+    <div class="box-footer">
+      <div class="form-group">
+          <div class="col-sm-8 col-sm-offset-2">
+              <button onclick="javascript:history.back(-1);" type="button" class="btn btn-default pull-right" data-dismiss="modal">返回</button>
+          </div>
+      </div>
+    </div>
+</div>
+</section>
+
+<script type="text/javascript">
+
+    var requestUrl = {
+      delete : "{:url('DesignerProduce/deleteProduce')}",
+      changeStatus : "{:url('DesignerProduce/changeStatus')}"
+    }
+
+    var handle = {
+
+       delete : function(obj,id){
+        bayMax.deleteConfirm(function(e){
+          $.post(requestUrl.delete,{id:id},function(e){
+            if(e.code==1){
+              $(obj).parents('tr').remove();
+            }
+          })
+        });
+      },
+      
+      changeStatus : function(obj,id,status){
+        var status = (status===1) ? 0 : 1 ;
+        $.post(requestUrl.changeStatus,{id:id,status:status},function(e){
+            if(e==1){
+               if(status==0){
+                  $(obj).parent('td').html('<span class="label label-default" onclick="handle.changeStatus(this,'+id+',0)" style="cursor:pointer">禁用</span>');
+               }else{
+                   $(obj).parent('td').html('<span class="label label-success" onclick="handle.changeStatus(this,'+id+',1)" style="cursor:pointer">开启</span>');
+               }
+            }
+        })
+      },
+
+    }
+
+</script>

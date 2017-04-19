@@ -15,13 +15,13 @@ return [
     // 服务器地址
     'hostname'        => 'localhost',
     // 数据库名
-    'database'        => 'fengliao_decorate',
+    'database'        => 'fengniao_mahjong',
     // 用户名
     'username'        => 'root',
     // 密码
     'password'        => 'root3306',
     // 端口
-    'hostport'        => '',
+    'hostport'        => '3306',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数

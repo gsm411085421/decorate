@@ -1,0 +1,95 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <form class="form-horizontal" id="img">
+                <div class="form-group" style="display: none;">  
+                    <label  for="inputName" class="col-sm-2 control-label">作品集id:</label>
+                    <div class="col-sm-8">
+                        <input id=""  type="text" name="produce_id" value="{$produce_id}" class="form-control" id="inputEmail3" placeholder="请输入设计师名字">
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label for="inputImg" class="col-sm-2 control-label">作品图片:</label>
+                    <div class="col-sm-8">
+                        <input id="goods_image" name="img_url" type="file"  class="file-loading">
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <button onclick="javascript:history.back(-1);" type="button" class="btn btn-default " data-dismiss="modal">返回</button>
+                        <button type="button" onclick="handle.add()"  class="btn btn-primary pull-right">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    var requestUrl = {
+        add : "{:url('DesignerProduceImg/addImg')}",
+        lists : "{:url('DesignerProduceImg/index',['id'=>$produce_id])}",
+        upload : "{:url('Upload/image')}"
+    };
+
+
+    var filePath = {
+        goodsImage : []
+    };
+
+
+    function upload_image(dom, name, max, options = {})
+    {   
+        param = {
+            language: 'zh', //设置语言
+            uploadUrl: requestUrl.upload + '?fieldName=' + name, //上传的地址
+            allowedFileExtensions : ['jpg','jpeg','png','gif'],//接收的文件后缀
+            maxFileSize: 2097152,//2M
+            maxFileCount : max,
+            previewSettings:{
+                image: {width: "120px", height: "120px"},
+            },
+        }
+        if(options){
+            param = $.extend(param, options);
+        }
+        dom.fileinput(param).on('fileuploaded', function(event, file, previewId, index, reader) {
+            if(file.response.code){
+                filePath.goodsImage = file.response.data;
+            }else{
+                bayMax.warning(file.response.msg);
+            }
+        });
+    }
+
+    upload_image($('#goods_image'), 'img_url', 1);
+
+
+    var handle = {
+        add : function(){
+            var data = $('#img').serializeArray();
+            data.push({name:'img_url',value:filePath.goodsImage});
+            console.log(data);
+            $.post(requestUrl.add,data,function(e){
+                 if(e.code==1){
+                    bayMax.msg(e.msg,function(){
+                        {literal}
+                        $.pjax({ url: requestUrl.lists , container: '#pjax-container'});
+                        {/literal}
+                    });
+                }else{
+                    bayMax.warning(e.msg);
+                }
+            })
+        }
+    };
+    
+   
+</script>
