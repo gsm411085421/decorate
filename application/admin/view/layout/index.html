@@ -1,0 +1,50 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box box-success">
+        <div class="box-header">
+            <a class="btn btn-success" href="<?=url('edit', ['estate_id'=>$estateId]) ?>" role="button">添加户型</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>户型名称</th>
+                        <th>室</th>
+                        <th>厅</th>
+                        <th>卫</th>
+                        <th>厨</th>
+                        <th>阳台</th>
+                        <th>排序</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data as $v): ?>
+                    <tr>
+                        <td><?=$v['id'] ?></td>
+                        <td><?=$v['name'] ?></td>
+                        <td><?=$v['room'] ?></td>
+                        <td><?=$v['hall'] ?></td>
+                        <td><?=$v['toilet'] ?></td>
+                        <td><?=$v['kitchen'] ?></td>
+                        <td><?=$v['balcony'] ?></td>
+                        <td><?=$v['sorted'] ?></td>
+                        <td>
+                            <div class="input-group">
+                                <a class="btn btn-success btn-sm btn-flat" href="<?=url('edit', ['id'=>$v['id'], 'estate_id'=>$estateId]) ?>" role="button">编辑</a>
+                                <button type="button" class="btn btn-danger btn-sm btn-flat">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
