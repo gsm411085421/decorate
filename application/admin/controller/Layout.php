@@ -46,4 +46,39 @@ class Layout extends Base
             'estateId' => $estateId
         ]);
     }
+
+    /**
+     * 户型属性
+     * @return [type] [description]
+     */
+    public function layoutAttr ()
+    {
+        $layoutId        = $this->request->param('layout_id');
+        $layoutAttrModel = parent::model('LayoutAttr');
+        $layoutModel     = parent::model('Layout');
+
+        $layoutData = $layoutModel->getOne($layoutId);
+        $layoutAttrData = $layoutAttrModel->getDataByType($layoutId);
+        $this->view->desc = '户型属性';
+        return $this->fetch('layoutAttr', [
+                'layoutAttrData' => $layoutAttrData,
+                'layoutData'     => $layoutData,
+                'type'           => $layoutModel->type,
+                'layout_id'      => $layoutId,
+            ]);
+    }
+
+    /**
+     * 编辑户型属性
+     * @return [type] [description]
+     */
+    public function layoutAttrEdit ()
+    {
+        if ($this->request->isPost()){
+            $data = $this->request->post();
+            return parent::model('LayoutAttr')->layoutAttrEdit($data);
+        } else {
+            return ['code'=>0, 'msg'=>'非法提交'];
+        }
+    }
 }

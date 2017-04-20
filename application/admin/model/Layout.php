@@ -20,6 +20,8 @@ class Layout extends Base
         'room.gt'           => '卧室数量输入有误'
     ];
 
+    public $type = ['room'=>'室', 'hall'=>'厅', 'kitchen'=>'厨', 'toilet'=>'卫', 'balcony'=>'阳台'];
+
     public function edit(array $input = [])
     {
         $room    = isset($input['room']) ? $input['room'] : 1;
@@ -69,4 +71,5 @@ class Layout extends Base
         }
         return $name;
     }
+
 }
