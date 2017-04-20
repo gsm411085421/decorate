@@ -1,0 +1,95 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+
+<div class="box">
+    <div class="box-body">
+        <form class="form-horizontal" id="usInfo">
+            <div class="form-group">  
+                <label  for="inputName" class="col-sm-2 control-label">地址:</label>
+                <div class="col-sm-8">
+                    <input id=""  type="text" name="address" value="{$data.address}" class="form-control" id="inputEmail3" placeholder="请输入地址">
+                </div>
+            </div>
+            <div class="form-group">  
+                <label  for="inputName" class="col-sm-2 control-label">联系电话:</label>
+                <div class="col-sm-8">
+                    <input id=""  type="text" name="phone" value="{$data.phone}" class="form-control" id="inputEmail3" placeholder="请输入联系电话">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputImg" class="col-sm-2 control-label">网站二维码图片:</label>
+                <div class="col-sm-8">
+                    <input id="goods_image" name="qrcode" type="file"  class="file-loading">
+                </div>
+            </div> 
+        </form>
+    </div>
+    <div class="box-footer">
+        <button class="btn btn-primary pull-right" onclick="handle.update()">保存</button>
+    </div>
+</div>
+</section>
+<script type="text/javascript">
+
+    var requestUrl = {
+        update : "{:url('System/update')}",
+        upload : "{:url('Upload/image')}"
+    }
+
+        var filePath = {
+        goodsImage : "{$data.qrcode}"
+    };
+
+
+    function upload_image(dom, name, max, options = {})
+    {   
+        var image = '<img src="'+filePath.goodsImage+'" class="file-preview-image" alt="" title="" width="150px">';
+        param = {
+            language: 'zh', //设置语言
+            uploadUrl: requestUrl.upload + '?fieldName=' + name, //上传的地址
+            allowedFileExtensions : ['jpg','jpeg','png','gif'],//接收的文件后缀
+            maxFileSize: 2097152,//2M
+            maxFileCount : max,
+            previewSettings:{
+                image: {width: "120px", height: "120px"},
+            },
+            initialPreview: image,
+            initialPreviewShowDelete: true,
+        }
+        if(options){
+            param = $.extend(param, options);
+        }
+        dom.fileinput(param).on('fileuploaded', function(event, file, previewId, index, reader) {
+            if(file.response.code){
+                filePath.goodsImage = file.response.data;
+            }else{
+                bayMax.warning(file.response.msg);
+            }
+        });
+    }
+
+    upload_image($('#goods_image'), 'qrcode', 1);
+
+
+    var handle = {
+        update : function(){
+            var data = $("#usInfo").serializeArray();
+            data.push({name:'qrcode',value:filePath.goodsImage});
+            $.post(requestUrl.update,data,function(e){
+                if(e.code==1){
+                    bayMax.msg(e.msg,function(e){
+                        $.pjax({ url: "{:url('System/usInfo')}" , container: '#pjax-container'});
+                    });                      
+                }else{
+                    bayMax.warning(e.msg);
+                }
+            })
+        }
+    }
+
+</script>

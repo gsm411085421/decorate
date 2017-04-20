@@ -37,6 +37,12 @@
   <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
 
   <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+
+
+  <script src="/static/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
+  <script src="/static/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -274,17 +280,6 @@
           </ul>
         </li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>文章管理</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{:url('Article/index')}"><i class="fa fa-circle-o"></i> <span>文章列表</span></a></li>
-            <li><a href="{:url('Article/trash')}"><i class="fa fa-circle-o"></i> <span>回收站</span></a></li>
-          </ul>
-        </li>
-        <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>主材管理</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -297,18 +292,35 @@
           </ul>
         </li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>商城</span>
+          <a href="#"><i class="fa fa-link"></i> <span>辅材管理</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{:url('Goods/index')}"><i class="fa fa-circle-o"></i> <span>商品列表</span></a></li>
-            <li><a href="{:url('Goods/category')}"><i class="fa fa-circle-o"></i> <span>分类管理</span></a></li>
-            <li><a href="{:url('Category/index')}"><i class="fa fa-circle-o"></i> <span>无限级分类</span></a></li>
-            <li><a href="{:url('Goods/modelIndex')}"><i class="fa fa-circle-o"></i> <span>模型管理</span></a></li>
-            <li><a href="{:url('Goods/attribute')}"><i class="fa fa-circle-o"></i> <span>商品属性</span></a></li>
-            <li><a href="{:url('Goods/seckillTime')}"><i class="fa fa-circle-o"></i> <span>秒杀时段设置</span></a></li>
+            <li><a href="{:url('auxiliary/index')}"><i class="fa fa-circle-o"></i> <span>辅材管理</span></a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>楼盘与户型</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{:url('Estate/index')}"><i class="fa fa-circle-o"></i> <span>楼盘</span></a></li>
+            <li><a href="{:url('ApartmentLayout/index')}"><i class="fa fa-circle-o"></i> <span>户型</span></a></li>
+            <li><a href="{:url('ApartmentLayout/usageArea')}"><i class="fa fa-circle-o"></i> <span>使用区域配置</span></a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>设计师</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="{:url('Designer/index')}"><i class="fa fa-circle-o"></i> <span>设计师</span></a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -318,6 +330,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="{:url('System/usIntroduce')}"><i class="fa fa-circle-o"></i> <span>网站介绍</span></a></li>
+            <li><a href="{:url('System/usInfo')}"><i class="fa fa-circle-o"></i> <span>网站配置</span></a></li>
+            <li><a href="{:url('ConfigImg/index')}"><i class="fa fa-circle-o"></i> <span>轮播图设置</span></a></li>
             <li><a href="{:url('Test/index')}"><i class="fa fa-circle-o"></i> <span>测试</span></a></li>
             <li><a href="{:url('Test/editor')}"><i class="fa fa-circle-o"></i> <span>测试 wysihtml5</span></a></li>
             <li><a href="{:url('Goods/add')}"><i class="fa fa-circle-o"></i> <span>添加商品</span></a></li>
@@ -451,8 +466,7 @@
 <script src="/static/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/static/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/static/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
+
 <script src="/static/plugins/select2/select2.full.min.js"></script>
 <script src="/static/plugins/pace/pace.min.js"></script>
 <script src="/static/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
