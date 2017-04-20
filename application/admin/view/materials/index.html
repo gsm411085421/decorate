@@ -30,9 +30,9 @@
                     <?php foreach ($data as $v): ?>
                     <tr>
                         <td><?=$v['id'] ?></td>
-                        <td><?=$cate[$v['cate_id']]? : '' ?></td>
-                        <td><?=$brand[$v['brand_id']]? : '' ?></td>
-                        <td><?=$series[$v['series_id']]? : '' ?></td>
+                        <td>{$cate[$v['cate_id']] ?? ''}</td>
+                        <td>{$brand[$v['brand_id']] ?? ''}</td>
+                        <td>{$series[$v['series_id']] ?? ''}</td>
                         <td><?=$v['title'] ?></td>
                         <td><?=$v['price'] ?></td>
                         <td><?=$v['unit'] ?></td>

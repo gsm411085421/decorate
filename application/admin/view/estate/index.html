@@ -1,0 +1,134 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <a class="btn btn-primary" data-toggle="modal" href='#modal-add-estate'>添加楼盘</a>
+            
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>楼盘名称</th>
+                        <th>是否显示</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $data as $v}
+                   <tr>
+                       <td>{$v.name}</td>
+                       <td>
+                           <?php if ($v['status']): ?>
+                                <span class="label label-success" onclick="setStatus(this, <?=$v['id'] ?>, 0)" style="cursor: pointer;">显示中</span>
+                            <?php else: ?>
+                                <span class="label label-default" onclick="setStatus(this, <?=$v['id'] ?>, 1)" style="cursor: pointer;">未显示</span>
+                            <?php endif; ?>
+                       </td>
+                       <td>{$v.create_at}</td>
+                       <td>
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="update({$v.id})">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                           <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="bayMax.trDelete(this, <?=$v['id'] ?>, '{:url('Estate/EstateDeleteOne')}')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                       </td>
+                   </tr>
+                   {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="modal-add-estate">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{:url('Estate/estateEdit')}" method="POST" class="form-horizontal" role="form" id="form-add-estate">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">编辑楼盘</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="field-name" class="col-sm-2">楼盘名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" id="field-name" class="form-control" value="" placeholder="请输入楼盘名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-name" class="col-sm-2">是否显示</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="status" value="1">
+                                    是
+                                </label>
+                                <label>
+                                    <input type="radio" name="status" value="0">
+                                    否
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-sorted" class="col-sm-2">排序</label>
+                        <div class="col-sm-10">
+                            <input type="number" name="sorted" id="field-sorted" class="form-control" value="" placeholder="数字范围为0~255">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="bayMax.modalSubmitClick(this)">保存</button>
+                </div>
+                <input type="hidden" name="id" value="">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#modal-add-estate').on('hidden.bs.modal', function(){
+        $('.radio input').iCheck('uncheck');
+        $('#form-add-estate')[0].reset();
+        $('#form-add-estate [name=id]').val('');
+    });
+    bayMax.pluginInit.icheck('.radio input');
+    function update (id){
+        $.get("{:url('Estate/estateEdit')}",{id:id}, function(re){
+            if (re) {
+                $('#field-name').val(re.name);
+                $('#form-add-estate [name=id]').val(re.id);
+                $('#field-sorted').val(re.sorted);
+                if (re.status) {
+                    $('.radio input:eq(0)').iCheck('check');
+                } else {
+                    $('.radio input:eq(1)').iCheck('check');
+                }
+            }
+        });
+        $('#modal-add-estate').modal('show');
+    }
+    var requestUrl = {
+        setStatus : "<?=url('estateStatus') ?>"
+    };
+
+    /** 设置状态 */
+    function setStatus(obj, id, value) {
+        $.post(requestUrl.setStatus, {id:id, value:value}, function(res){
+            if (res) {
+                if (value) {
+                    $(obj).addClass('label-success').removeClass('label-default').text('显示中').attr('onclick', 'setStatus(this, '+id+', 0)')
+                } else {
+                    $(obj).removeClass('label-success').addClass('label-default').text('未显示').attr('onclick', 'setStatus(this, '+id+', 1)')
+                }
+            }
+        });
+    }
+</script>

@@ -13,11 +13,11 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'localhost',
+    'hostname'        => 'sql.fengniaozhiku.com',
     // 数据库名
-    'database'        => 'fengniao_mahjong',
+    'database'        => 'fengniao_decorate',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'lixin',
     // 密码
     'password'        => 'root3306',
     // 端口
