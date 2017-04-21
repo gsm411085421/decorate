@@ -42,8 +42,10 @@ class Designer extends Base
         return $this->fetch(''); 
     }
 
-     /**
+    /**
      * 编辑设计师信息
+     * @param  [type] $id 主键id
+     * @return [type]     
      */
     public function editDesigner($id)
     {    

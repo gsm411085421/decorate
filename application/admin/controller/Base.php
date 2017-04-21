@@ -19,7 +19,7 @@ class Base extends Controller
     public function _initialize()
     {
         Session::init();
-        // $this->_checkLogin(); // 登录检查
+        $this->_checkLogin(); // 登录检查
 
         $this->view->config('tpl_cache', false); // 关闭模板缓存
         if ($this->request->isPjax()) {

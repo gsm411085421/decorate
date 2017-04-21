@@ -1,0 +1,94 @@
+header{
+    height: auto;
+    background: none;
+}
+.logo{
+    position: absolute;
+    z-index: 1;
+}
+.header-nav{
+    position: absolute;
+    z-index: 1;
+    left: 10%;
+}
+.content{
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 80px;
+    background: #f2f2f2;
+}
+.brand-title{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.brand-list{
+    white-space:nowrap;
+    margin: 0 auto;
+    width: 70%;
+    overflow: hidden;
+}
+.brand-list-img{
+    position: relative;
+    height: 120px;
+}
+.brand-list img{
+    cursor: pointer;
+    transition:all 0.5s ease 0s; 
+    height: 110px;
+    width: 25%;
+}
+.brand-list img:hover{
+    box-shadow:0 5px 5px 3px #dadada;
+}
+.entry{
+    width: 100%;
+    height: 270px;
+    padding-top: 100px;
+    background-image: url(../img/entry.png);
+}
+.entry div{
+    width: 300px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    color: #fff;
+    border: 1px solid #fff;
+    font-size: 18px;
+    margin:0 auto;
+    cursor: pointer;
+}
+.bx-default-pager{
+	display:none !important;
+}
+.lunbo-left{
+    position: absolute;top: 45%;
+    cursor: pointer;
+}
+.lunbo-right{
+    position: absolute;top: 44%;right: 0;
+    cursor: pointer;
+}
+.drop-list{
+    position: relative;
+}
+.bx-wrapper {
+    max-width: 825px !important;
+}
+.bx-wrapper img{
+    border:1px solid #ccc;
+}
+@media screen and (max-width: 860px) {
+    header{
+        background: #333333;
+    }
+    .lunbo-left{
+    position: absolute;top: 60%;
+    }
+    .lunbo-right{
+        position: absolute;top: 60%;right: 0;
+    }
+    .content {
+    padding-top: 22px;
+    padding-bottom: 1px;
+    }
+}
