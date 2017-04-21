@@ -33,12 +33,15 @@
                        </td>
                        <td>{$v.create_at}</td>
                        <td>
-                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="update({$v.id})">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                           <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="bayMax.trDelete(this, <?=$v['id'] ?>, '{:url('Estate/EstateDeleteOne')}')">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm btn-flat" data-toggle="tooltip" data-placement="bottom" data-title="编辑" onclick="update({$v.id})">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <a class="btn btn-info btn-sm btn-flat" href="{:url('Layout/index', ['estate_id'=>$v['id']])}" role="button">户型</a>
+                               <button type="button" class="btn btn-warning btn-sm btn-flat" data-toggle="tooltip" data-placement="bottom" data-title="删除" onclick="bayMax.trDelete(this, <?=$v['id'] ?>, '{:url('Estate/EstateDeleteOne')}')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
                        </td>
                    </tr>
                    {/foreach}

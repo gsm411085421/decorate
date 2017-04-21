@@ -158,7 +158,47 @@ var bayMax = {
         radioClass    : 'iradio_square-green'
       }, config);
       $(selector).iCheck(config);
-    }
+    },
+    // Plugin : td 修改排序
+    sorted : function(selector, url, callback){
+        /** 设置 td 的宽度 */
+        var trWidth = $(selector).width();
+        $(selector).width(trWidth)
+
+        /** hover 样式 */
+        $('table').on('mouseenter', selector, function(){
+            $(this).css('color', '#c6c6fa');
+        }).on('mouseleave', selector, function(){
+            $(this).css('color', '#333');
+        });
+        /** 绑定 click 事件 */
+        $('table').on('click', selector, function(event){
+            var val = $(this).text();
+            var inputGroup = '<div class="input-group" style="width:150px">\
+                                <input type="number" class="form-control input-sm" value="'+val+'">\
+                                <div class="input-group-addon" style="cursor:pointer;width:50px;">OK</div>\
+                            </div>';
+            $(this).html(inputGroup);
+            $(this).find('input').trigger('focus')
+        })
+        /**  发送请求 */
+        var btn = selector+' .input-group-addon';
+        $('table').on('click', btn, function(event){
+            event.stopPropagation();
+            var $btn = $(this);
+            var data = {id : $btn.closest('td').attr('data-id'), value : $btn.siblings('input').val()};
+            $.post(url, data, function(res){
+                if (typeof callback === 'function') {
+                    callback();
+                }
+                $btn.closest('td').empty().text(data.value);
+            });
+        });
+        /** 阻止点击 input 的冒泡 */
+        $(selector).on('click', 'input', function(event){
+            event.stopPropagation();
+        });
+    },
   },
 
   /**

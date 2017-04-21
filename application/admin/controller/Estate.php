@@ -53,4 +53,14 @@ class Estate extends Base
         $post = $this->request->post();
         return parent::model('Estate')->setStatus($post['value'], ['id'=>$post['id']]);
     }
+
+    ///户型///
+    
+    function apartmentLayout ()
+    {
+        $estateId = $this->request->param('pid');
+        $this->view->desc = '户型列表';
+        $data = parent::model('ApartmentLayout')->getAll();
+        return $this->fetch('apartmentLayout', ['data'=>$data]);
+    }
 }
