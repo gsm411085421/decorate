@@ -7,7 +7,7 @@ class ConfigImg extends Base{
 
     public function index()
     {   
-        $this->view->desc = '轮播图设置';
+        $this->view->desc = '首页轮播图';
         $data = parent::model()->getAll();
         return $this->fetch('',['list'=>$data]);
     }

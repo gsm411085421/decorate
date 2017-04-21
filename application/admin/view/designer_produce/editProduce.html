@@ -56,9 +56,7 @@
             $.post(requestUrl.edit,data,function(e){
                  if(e.code==1){
                     bayMax.msg(e.msg,function(){
-                        {literal}
                         $.pjax({ url: requestUrl.lists , container: '#pjax-container'});
-                        {/literal}
                     });
                 }else{
                     bayMax.warning(e.msg);

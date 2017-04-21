@@ -39,7 +39,7 @@ class Designer extends Base
             $input = $this->request->post(); 
             return parent::model()->edit($input);
         }
-        return $this->fetch('addDesigner'); 
+        return $this->fetch(''); 
     }
 
      /**
@@ -53,7 +53,7 @@ class Designer extends Base
             $input = $this->request->post(); 
             return parent::model()->edit($input);
         }
-        return $this->fetch('editDesigner',['list'=>$data]); 
+        return $this->fetch('',['list'=>$data]); 
     }
 
     /**

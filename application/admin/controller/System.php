@@ -31,7 +31,7 @@ class System extends Base
         $data = $systemConfig->data();
         return $this->fetch('',['data'=>$data]);
     }
-
+    
     /**
      * 更新系统配置
      * @return [type] [description]

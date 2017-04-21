@@ -8,6 +8,25 @@ class Upload extends BaseUpload
 {   
     
     
+    public function designerImage($fieldName = 'file')
+    {
+        $file = Request::instance()->file($fieldName);
+        $info = $file->validate($this->validateRule['image'])
+                ->move(ROOT_PATH. 'public'. DS. 'uploads'.DS .'images');
+        if (!is_string($info)) {
+            $data = [
+                'info'     => $info->getInfo(),
+                'filename' => $info->getFileName(),
+                'savename' => $info->getSaveName()
+            ];
+            $res = ['code'=>1, 'data'=>config('img_save_url').str_replace('\\', '/', $data['savename'])];
+        } else {
+            $res = ['code'=>0, 'msg'=>$info ? : '上传失败了'];
+        }
+        return $res;
+    }
+
+
     /**
      * 图片上传
      * @param  string $fieldName 表单字段 name
@@ -22,7 +41,7 @@ class Upload extends BaseUpload
                 'filename' => $info->getFileName(),
                 'savename' => $info->getSaveName()
             ];
-            $res = ['code'=>1, 'data'=>config('img_save_url').str_replace('\\', '/', $data['savename'])];
+            $res = ['code'=>1, 'data'=>$data ];
         } else {
             $res = ['code'=>0, 'msg'=>$info ? : '上传失败了'];
         }
