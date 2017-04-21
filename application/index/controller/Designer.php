@@ -1,9 +1,13 @@
 <?php
+/**
+ * 估价
+ */
+
 namespace app\index\controller;
 
-class Index extends Base
+class Designer extends Base
 {
-    public function index()
+    public function index ()
     {
         return $this->fetch();
     }

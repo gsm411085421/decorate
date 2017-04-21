@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/index/css/zui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/appraisal.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
+    <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
+    <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
+</head>
+<body>
+<!-- 头部 -->
+    {include file="public/nav" /}
+    <div class="content">
+        <div class="top-logo">
+            <img src="/static/index/img/appraisal_1.png">
+        </div>
+        <!-- 选择楼盘 -->
+       <div class="building">
+            <span class="house-choose"><img src="/static/index/img/loupan1.png">选择楼盘</span>
+        <select class="form-control" id="exampleInputAddress1">
+            <option>选择楼盘</option>
+        </select>
+        </div>
+        <!-- 选择户型 -->
+        <div class="house">
+            <span class="house-choose"><img src="/static/index/img/huxing1.png">选择户型</span>
+            <select class="form-control " id="exampleInputAddress1">
+                <option>几厅-几室-几厨-几卫</option>
+            </select>
+        <div class="house-detail">
+            墙面面积：210㎡ 地面面积320㎡ 周长：300㎡ 总面积：500㎡
+        </div>
+        </div>
+        <!-- 辅材包 -->
+        <div class="secondary-steel">
+            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><a href="accessories.html" class="a-button">去挑选</a>
+        </div>
+        <div class="material">
+            <div class="material-list">
+                <span class="house-choose"><img src="/static/index/img/zhucai1.png">主材</span>
+                <span class="material-choose">客厅</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="stuff.html" class="a-button">重新挑选</a>     
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">主卧</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="stuff.html" class="a-button">重新挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">次卧</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">客卧</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">客厅阳台</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">生活阳台</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">客卫生间</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">主卫生间</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="material-list">
+                <span class="house-choose"></span>
+                <span class="material-choose">厨房</span><a href="stuff.html" class="a-button">去挑选</a>
+            </div>
+            <div class="confirm">
+                <span class="house-choose"></span></span><a href="inventory.html" class="a-button">确定</a>
+            </div>
+        </div>
+    </div>
+<!-- 尾部 -->
+    <!-- 860px以上显示 -->
+    {include file="public/footer" /}
+</body>
+<script type="text/javascript">
+</script>
+</html>

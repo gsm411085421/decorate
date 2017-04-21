@@ -1,9 +1,13 @@
 <?php
+/**
+ * 材料
+ */
+
 namespace app\index\controller;
 
-class Index extends Base
+class Material extends Base
 {
-    public function index()
+    public function index ()
     {
         return $this->fetch();
     }

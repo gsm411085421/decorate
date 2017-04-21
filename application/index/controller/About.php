@@ -1,9 +1,9 @@
 <?php
 namespace app\index\controller;
 
-class Index extends Base
+class About extends Base
 {
-    public function index()
+    public function index ()
     {
         return $this->fetch();
     }

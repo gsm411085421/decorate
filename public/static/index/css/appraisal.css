@@ -1,0 +1,136 @@
+.content{
+    height: 1100px;
+    background: #D0A970;
+    padding-top: 40px;
+    color: #fff;
+}
+.top-logo{
+    text-align: center;
+}
+.building select{
+    width: 200px;
+    display: inline-block;
+}
+.house select{
+    width: 200px;
+    display: inline-block;
+}
+.a-button{
+    width: 140px;
+    height: 35px;
+    color: #fff;
+    background: #404040;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+.a-button:hover,.a-button:visited, .a-button:link, .a-button:active{
+    color:#fff;
+    text-decoration: none;
+}
+.a-button:hover{
+    background: rgba(64,64,64,0.5);
+}
+.material p{
+    display: inline-block;
+}
+.house-choose,.material-choose{
+    display: inline-block;
+    width: 102px;
+}
+.material-choose-detail{
+    display: inline-block;
+    width: 280px;
+    vertical-align: middle;
+    
+}
+.material-list{
+    margin: 20px 0;
+}
+.secondary-steel{
+    margin: 20px 0;
+    margin-left: 30%;
+}
+.material-package{
+    margin: 20px 0;
+    margin-left: 30%;
+}
+.material{
+    margin-left: 30%;
+}
+.building{
+    margin: 20px 0;
+    margin-left: 30%;
+}
+.confirm{
+    margin: 40px 0;
+}
+.confirm .a-button{
+    width: 205px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+}
+.house{
+    margin: 20px 0;
+    margin-left: 30%;
+}
+.house-choose img{
+    padding-right: 10px;
+}
+@media screen and (max-width: 915px) {
+    .secondary-steel{
+    margin: 20px 0;
+    margin-left: 0;
+}
+.material-package{
+    margin: 20px 0;
+    margin-left: 0;
+}
+.material{
+    margin-left: 0;
+}
+.building{
+    margin: 20px 0;
+    margin-left: 0;
+}
+.house{
+    margin: 20px 0;
+    margin-left: 0;
+}
+.confirm{
+    margin: 20px 0;
+    margin-left: -4px;
+}
+.content{
+    height: 1400px;
+}
+.a-button{
+    width: 90px;
+}
+}
+@media screen and (max-width: 645px) {
+    .house-choose{
+        display: block;
+    }
+    .material-list span{
+        padding-left: 15px;
+    }
+    .material-list a{
+        margin-left: 15px;
+    }
+    .material-choose-detail{
+        display: block;
+        width: auto;
+        padding-right: 15px;
+    }
+    .material-choose{
+        line-height: 25px;
+        height: 20px;
+    }
+    .confirm .a-button{
+        display: block;
+        margin: 0 auto;
+    }
+}

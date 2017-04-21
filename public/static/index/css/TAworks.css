@@ -1,0 +1,69 @@
+.content{
+    position: relative;
+}s
+.works-list{
+    width: 90%;
+    margin:0px auto;
+    display: none;
+}
+.works-list img{
+    width: 24%;
+    margin: 10px 0;
+}
+.box{
+    position: relative;
+    margin-bottom: 13px;
+    overflow: hidden;
+}
+.box div{
+    width: 860 !important;
+    margin: 0 auto;
+}
+#roll dd{
+    float: left;
+    margin-right: 5px;
+    width: 210px;
+    height: 116px;
+    line-height: 113px;
+    text-align: center;
+    cursor: pointer;
+}
+#roll dd:hover{
+    border: 1px solid #ace976;
+}
+#roll img{
+    width: 200px
+}
+.prev{
+    position: absolute;
+    left: 5%;
+    top: 50px;
+    cursor: pointer;
+}
+.next{
+    position: absolute;
+    right: 5%;
+    top: 50px;
+    cursor: pointer;
+}
+.lunbo-2-jiantou{
+    color: #999999;
+}
+.lunbo-left{
+    position: absolute;top: 45%;
+    color: #fff;
+    cursor: pointer;
+}
+.lunbo-right{
+    position: absolute;top: 44%;right: 0;
+    color: #fff;
+    cursor: pointer;
+}
+.bx-pager{
+    display: none;
+}
+.slide{
+    margin-bottom: 40px;
+}
+@media screen and (max-width: 860px) {
+}
