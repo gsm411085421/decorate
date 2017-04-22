@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
     <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
     <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
+    <script type="text/javascript" src='/static/index/js/handle.js'></script>
 </head>
 <body>
 <!-- 头部 -->
@@ -22,14 +23,17 @@
         <!-- 选择楼盘 -->
        <div class="building">
             <span class="house-choose"><img src="/static/index/img/loupan1.png">选择楼盘</span>
-        <select class="form-control" id="exampleInputAddress1">
+        <select class="form-control" id="exampleInputAddress1" onchange="evaluation.getLayoutData(this, '{:url('Evaluation/getLayout')}')">
             <option>选择楼盘</option>
+            {foreach $data.estate as $v}
+            <option value="{$v.id}">{$v.name}</option>
+            {/foreach}
         </select>
         </div>
         <!-- 选择户型 -->
         <div class="house">
             <span class="house-choose"><img src="/static/index/img/huxing1.png">选择户型</span>
-            <select class="form-control " id="exampleInputAddress1">
+            <select class="form-control apartment-layout" id="exampleInputAddress1" onchange="evaluation.calcArea(this, '{:url('Evaluation/calcArea')}')">
                 <option>几厅-几室-几厨-几卫</option>
             </select>
         <div class="house-detail">
@@ -38,44 +42,44 @@
         </div>
         <!-- 辅材包 -->
         <div class="secondary-steel">
-            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><a href="accessories.html" class="a-button">去挑选</a>
+            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><a href="{:url('Evaluation/accessories')}" class="a-button">去挑选</a>
         </div>
         <div class="material">
             <div class="material-list">
                 <span class="house-choose"><img src="/static/index/img/zhucai1.png">主材</span>
-                <span class="material-choose">客厅</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="stuff.html" class="a-button">重新挑选</a>     
+                <span class="material-choose">客厅</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">重新挑选</a>     
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">主卧</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="stuff.html" class="a-button">重新挑选</a>
+                <span class="material-choose">主卧</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">重新挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">次卧</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">次卧</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">客卧</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">客卧</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">客厅阳台</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">客厅阳台</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">生活阳台</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">生活阳台</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">客卫生间</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">客卫生间</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">主卫生间</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">主卫生间</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="material-list">
                 <span class="house-choose"></span>
-                <span class="material-choose">厨房</span><a href="stuff.html" class="a-button">去挑选</a>
+                <span class="material-choose">厨房</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
             </div>
             <div class="confirm">
                 <span class="house-choose"></span></span><a href="inventory.html" class="a-button">确定</a>
@@ -87,5 +91,6 @@
     {include file="public/footer" /}
 </body>
 <script type="text/javascript">
+var evaluation = new evaluation();
 </script>
 </html>

@@ -201,4 +201,16 @@ class Base extends Model
         $pageSize = $pageSize ? : $this->pageSize;
         return $this->where($where)->field($field)->limit($pageSize)->page($page)->select();
     }
+
+    /**
+     * 所有数据
+     * @param  stirng  $sortField 排序字段
+     * @param  array   $where     条件
+     * @param  boolean $field     字段
+     * @return [type]             [description]
+     */
+    public function allDataWithSort ($sortField, $where = [], $field = true)
+    {
+        return $this->field($field)->where($where)->order($sortField)->select();
+    }
 }

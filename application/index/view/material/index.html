@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/static/index/css/stuff.css">
     <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
     <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
+    <script type="text/javascript" src="/static/index/js/handle.js"></script>
 </head>
 <body>
 <!-- 头部 -->
@@ -35,13 +36,9 @@
 		    </div>
 		    <div class="collapse navbar-collapse navbar-collapse-example">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="">瓷砖</a></li>
-		        <li><a href="">木地板</a></li>
-		        <li><a href="">洁具</a></li>
-		        <li><a href="">橱柜</a></li>
-		        <li><a href="">门</a></li>
-		        <li><a href="">窗户</a></li>
-		        <li><a href="">衣柜</a></li>
+                {foreach $data.brand as $v}
+		        <li class="active"><a href="">{$v.name}</a></li>
+                {/foreach}
 		      </ul>
 		    </div>
 		  </div>
@@ -59,39 +56,29 @@
 		    </div>
 		    <div class="collapse navbar-collapse navbar-collapse-example">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="">LD</a></li>
-		        <li><a href="">圣德堡</a></li>
-		        <li><a href="">威尔斯</a></li>
+                {foreach $data.cate as $v}
+		        <li class="active"><a href="">{$v.cate_name}</a></li>
+                {/foreach}
 		      </ul>
 		    </div><!-- END .navbar-collapse -->
 		  </div>
 		</nav>
 		<div class="product">
 			<div class="product-box">
+                {foreach $data.data as $v}
 				<div class="product-list">
-					<img src="/static/index/img/stuff_2.png" alt="">
+					<img src="{$v.cover}" alt="">
 					<div>
 						<div class="shade"></div>
 						<div class="product-sum">
-							<h5>LD地砖</h5>
-							<p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>
-							<div>￥<span>128.00</span>/m</div>
-							<a href="" data-toggle="modal" data-target="#myModal">查看详情</a>
+							<h5>{$v.title}</h5>
+							<p>{$v.summary}</p>
+							<div>￥<span>{$v.price}</span>/m</div>
+							<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal" onclick="handle.getDetail({$v.id}, '{:url('Material/getDetail')}')">查看详情</a>
 						</div>
 					</div>
 				</div>
-				<div class="product-list">
-                                            <img src="/static/index/img/stuff_2.png" alt="">
-                                            <div>
-                                                <div class="shade"></div>
-                                                <div class="product-sum">
-                                                    <h5>LD地砖</h5>
-                                                    <p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>
-                                                    <div>￥<span>128.00</span>/m</div>
-                                                    <a href="" data-toggle="modal" data-target="#myModal">查看详情</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                {/foreach}
 			</div>
 		</div>
 	</div>
@@ -101,10 +88,10 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
-	        <h4 class="modal-title">LD地砖详情介绍</h4>
+	        <h4 class="modal-title" id="modal-title-data">LD地砖详情介绍</h4>
 	      </div>
 	      <div class="modal-body">
-	        <div class="banner">
+	        <div class="banner" id="banner-data">
 	        	<img src="/static/index/img/stuff-detail_03.png" alt="">
 	        	<div class="detail">
 					<div class="shade"></div>
@@ -115,7 +102,7 @@
 					</div>
 				</div>
 	        </div>
-	        <div class="detail-box">
+	        <div class="detail-box" id="detail-data">
 	        	<div class="detail-left">
 	        		<h5>JMC88829土耳其古堡</h5>
 	        		<p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>
@@ -128,11 +115,12 @@
 	        	</div>
 	        </div>	        
 	      </div>
+          <?php if(isset($param['choose_material']) && $param['choose_material']):?>
       	<div class="import-box">
         	数量：<input type="number" />个/套
         	<a href="javascript:void(0);">确定</a>
         </div>
-	        
+	        <?php endif;?>
 	      </div>
 	    </div>
 	  </div>
@@ -143,5 +131,6 @@
     {include file="public/footer" /}
 </body>
 <script type="text/javascript">
+var handle = new auxiliary();
 </script>
 </html>

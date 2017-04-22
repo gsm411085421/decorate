@@ -1,6 +1,6 @@
 <?php
 namespace app\index\controller;
-use think\Controller;
+use app\common\controller\Base as Controller;
 
 class Base extends Controller
 {
