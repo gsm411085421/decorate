@@ -52,6 +52,6 @@ class Login extends \think\Controller
     {
         Session::start();
         Session::destroy();
-        $this->redirect('index');
+        $this->redirect('Login/index');
     }
 }
