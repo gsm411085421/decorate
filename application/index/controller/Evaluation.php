@@ -14,15 +14,48 @@ class Evaluation extends Base
 
     public function index ()
     {
-        $options = $this->request->param();
-
+        // Cookie::delete('auxiliary');
+        $param = $this->request->param();
         //辅材
-        $data['auxiliary'] = Cookie::has('auxiliary') ? Cookie::get('auxiliary') : [];
+        $auxiliaryId = Cookie::has('auxiliary') ? Cookie::get('auxiliary') : 0;
+        $data['auxiliary'] = parent::model('Auxiliary')->getOne($auxiliaryId)->toArray();
         //主材
-        
+        $allMaterial = to_array(parent::model('Materials')->getAll());
+        $materialId  = Cookie::has('material') ? Cookie::get('material') : [];
         $data['estate'] = Db::name('Estate')->where('status', 1)->order('sorted ASC')->select();//楼盘
+        $data['material'] = [];
+        foreach ($materialId as $k=>$v) {
+            foreach ($v as $sv) {
+                foreach ($allMaterial as $ssv) {
+                    if ($ssv['id'] == $sv['id']){
+                        $ssv['num'] = $sv['num'];
+                        $data['material'][$k][] = $ssv;
+                    }
+                }
+            }
+        }
+        if (isset($param['layout_id']) && $param['layout_id']){
+            $data['layoutArea'] = $this->calcArea($param['layout_id']);
+        }
+        if (isset($param['estate_id']) && $param['estate_id']){
+            $data['layoutData'] = $this->getLayout($param['estate_id']);
+        }
+        $data['usageArea'] = parent::model('UsageArea')->allDataWithSort('sorted ASC');
+        //清单
+        $list = [];
+        if (isset($param['confirm']) && $param['confirm']) {
+            if (isset($param['estate_id']) && $param['estate_id']) {
+                $list['estate'] = parent::model('Estate')->getOne($param['estate_id']);
+            }
+            if (isset($param['layout_id']) && $param['layout_id']) {
+                $list['layout'] = parent::model('Layout')->getOne($param['layout_id']);
+                $list['layoutAttr'] = parent::model('LayoutAttr')->getAll(['layout_id'=>$param['layout_id']]);
+            }
+        }
         return $this->fetch('', [
-            'data' => $data,
+            'data'  => $data,
+            'param' => $param,
+            'list'  => $list,
         ]);
     }
 
@@ -31,8 +64,9 @@ class Evaluation extends Base
      */
     public function accessories ($isCal = 0)
     {
+        $param = $this->request->param();
         $data = Db::name('Auxiliary')->field(true)->where('status', 1)->select();
-        return $this->fetch('', ['data'=>$data, 'isCal'=>$isCal]);
+        return $this->fetch('', ['data'=>$data, 'isCal'=>$isCal, 'param'=>$param]);
     }
 
     /**
@@ -46,14 +80,6 @@ class Evaluation extends Base
             ->where(['id'=>$id,'status'=>1])->find();
         $data['detail'] = parent::model('AuxiliaryDetail')->getAllWithSort(['a_id'=>$id]);
         return $data;
-    }
-
-    /**
-     * 主材
-     */
-    public function material ()
-    {
-        return $this->fetch();
     }
 
     /**
@@ -91,15 +117,14 @@ class Evaluation extends Base
      * 选择辅材
      * @param [type] $auxiliaryId [description]
      */
-    public function setAuxiliary ($auxiliaryId)
+    public function setAuxiliary ($id)
     {
-        $auxiliary = Db::name('Auxiliary')->field('title')->where('id', $auxiliaryId)->find();
-        if ($auxiliary) {
-            if (Cookie::has('auxiliary')) {
-                Cookie::delete('auxiliary');
-            };
-            Cookie::set('auxiliary', $auxiliary);
-        }
-        $this->redirect('Evaluation/index');
+        $param = $this->request->param();
+        Cookie::set('auxiliary', $id);
+        $this->redirect('Evaluation/index',[
+            'estate_id' => $param['estate_id'], 
+            'layout_id' => $param['layout_id'],
+        ]);
     }
+
 }

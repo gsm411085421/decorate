@@ -36,8 +36,9 @@
 		    </div>
 		    <div class="collapse navbar-collapse navbar-collapse-example">
 		      <ul class="nav navbar-nav">
-                {foreach $data.brand as $v}
-		        <li class="active"><a href="">{$v.name}</a></li>
+                <li class="active"><a href="javascript:;" onclick="handle.materialQurey('{:url('Material/materialQuery')}', 'cate_id', 0, this,'{:url('Material/getDetail')}')">全部</a></li>
+                {foreach $data.cate as $v}
+		        <li><a href="javascript:;" onclick="handle.materialQurey('{:url('Material/materialQuery')}', 'cate_id', {$v.id}, this,'{:url('Material/getDetail')}')">{$v.cate_name}</a></li>
                 {/foreach}
 		      </ul>
 		    </div>
@@ -55,16 +56,33 @@
 		     <a class="navbar-brand" href="">品牌</a>
 		    </div>
 		    <div class="collapse navbar-collapse navbar-collapse-example">
-		      <ul class="nav navbar-nav">
-                {foreach $data.cate as $v}
-		        <li class="active"><a href="">{$v.cate_name}</a></li>
+		      <ul class="nav navbar-nav" id="brand-list">
+                <li class="active"><a href="javascript:;" onclick="handle.materialQurey('{:url('Material/materialQuery')}', 'brand_id', 0, this,'{:url('Material/getDetail')}')">全部</a></li>
+                {foreach $data.brand as $v}
+		        <li><a href="javascript:;" onclick="handle.materialQurey('{:url('Material/materialQuery')}', 'brand_id', {$v.id}, this,'{:url('Material/getDetail')}')">{$v.name}</a></li>
                 {/foreach}
 		      </ul>
 		    </div><!-- END .navbar-collapse -->
 		  </div>
 		</nav>
+        <nav class="navbar" role="navigation" id="series-nav" style="display:none">
+            <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+             <a class="navbar-brand" href="">系列</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-collapse-example">
+              <ul class="nav navbar-nav" id="series-list"></ul>
+            </div><!-- END .navbar-collapse -->
+          </div>
+        </nav>
 		<div class="product">
-			<div class="product-box">
+			<div class="product-box" id="material-list">
                 {foreach $data.data as $v}
 				<div class="product-list">
 					<img src="{$v.cover}" alt="">
@@ -74,7 +92,7 @@
 							<h5>{$v.title}</h5>
 							<p>{$v.summary}</p>
 							<div>￥<span>{$v.price}</span>/m</div>
-							<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal" onclick="handle.getDetail({$v.id}, '{:url('Material/getDetail')}')">查看详情</a>
+							<a href="javascript:;" data-toggle="modal" data-target="#myModal" onclick="handle.getDetail({$v.id}, '{:url('Material/getDetail')}')">查看详情</a>
 						</div>
 					</div>
 				</div>
@@ -91,34 +109,19 @@
 	        <h4 class="modal-title" id="modal-title-data">LD地砖详情介绍</h4>
 	      </div>
 	      <div class="modal-body">
-	        <div class="banner" id="banner-data">
-	        	<img src="/static/index/img/stuff-detail_03.png" alt="">
-	        	<div class="detail">
-					<div class="shade"></div>
-					<div class="product-sum">
-						<h5>JMC88829土耳其古堡</h5>
-						<p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>
-						<div>￥<span>128.00</span></div>
-					</div>
-				</div>
-	        </div>
-	        <div class="detail-box" id="detail-data">
-	        	<div class="detail-left">
-	        		<h5>JMC88829土耳其古堡</h5>
-	        		<p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>
-	        		<img src="/static/index/img/stuff-detail_10.png" alt="">
-	        	</div>
-	        	<div class="detail-right">
-	        		<img src="/static/index/img/stuff-detail_07.png" alt="">
-	        		<h5>JMC88829土耳其古堡</h5>
-	        		<p>手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰手机哈桑就发顺丰</p>	        		
-	        	</div>
-	        </div>	        
+	        <div class="banner" id="banner-data"></div>
+	        <div class="detail-box" id="detail-data"></div>	        
 	      </div>
           <?php if(isset($param['choose_material']) && $param['choose_material']):?>
       	<div class="import-box">
-        	数量：<input type="number" />个/套
-        	<a href="javascript:void(0);">确定</a>
+            <form action="{:url('Material/setMaterial')}" method="get">
+            	数量：<input type="number" name="num" id="material-num" value="1" />个/套
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="area_id" value="{$param['area_id'] ?? ''}">
+                <input type="hidden" name="layout_id" value="{$param['layout_id'] ?? ''}">
+                <input type="hidden" name="estate_id" value="{$param['estate_id']}">
+            	<a href="javascript:void(0);" onclick="handle.clickConfirm(this)">确定</a>
+            </form>
         </div>
 	        <?php endif;?>
 	      </div>
@@ -131,6 +134,6 @@
     {include file="public/footer" /}
 </body>
 <script type="text/javascript">
-var handle = new auxiliary();
+var handle = new loadHtml();
 </script>
 </html>

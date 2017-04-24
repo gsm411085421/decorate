@@ -70,24 +70,15 @@
     <div class="content">
         <p class="brand-title">品牌 BRAND</p>
         <div class="slider3">
-
-	      <a href="javascript:void(0);" class="slide"><img src="/static/index/img/brand_1.png" alt=""></a>
-	
-	      <a href="javascript:void(0);" class="slide"><img src="/static/index/img/brand_2.png" alt=""></a>
-	
-	      <a href="javascript:void(0);" class="slide"><img src="/static/index/img/brand-1.png" alt=""></a>
-	
-	      <a href="javascript:void(0);" class="slide"><img src="/static/index/img/brand_2.png" alt=""></a>
-	
-	      <a href="javascript:void(0);" class="slide"><img src="/static/index/img/brand-1.png" alt=""></a>
-	
-
+        {foreach $brand as $v}
+	      <a href="{:url('Material/index', ['brand_id'=>$v['id']])}" class="slide"><img src="{$v.logo}" alt=""></a>
+	       {/foreach}
     	</div>
     </div>
     <!-- 估价入口 -->
     <div class="entry">
         <div>
-        <a href="appraisal.html" title="">
+        <a href="{:url('Evaluation/index')}" title="">
             我要估价
         </a>
         </div>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/static/index/css/zui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/index/css/common.css">
     <link rel="stylesheet" type="text/css" href="/static/index/css/appraisal.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/inventory.css">
     <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
     <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
     <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
@@ -23,10 +24,10 @@
         <!-- 选择楼盘 -->
        <div class="building">
             <span class="house-choose"><img src="/static/index/img/loupan1.png">选择楼盘</span>
-        <select class="form-control" id="exampleInputAddress1" onchange="evaluation.getLayoutData(this, '{:url('Evaluation/getLayout')}')">
-            <option>选择楼盘</option>
+        <select class="form-control estate" id="exampleInputAddress1" onchange="evaluation.getLayoutData(this, '{:url('Evaluation/getLayout')}')" >
+            <option value="">选择楼盘</option>
             {foreach $data.estate as $v}
-            <option value="{$v.id}">{$v.name}</option>
+            <option value="{$v.id}" <?php if(isset($param['estate_id']) && $param['estate_id'] == $v['id']):?>selected<?php endif;?>>{$v.name}</option>
             {/foreach}
         </select>
         </div>
@@ -34,58 +35,116 @@
         <div class="house">
             <span class="house-choose"><img src="/static/index/img/huxing1.png">选择户型</span>
             <select class="form-control apartment-layout" id="exampleInputAddress1" onchange="evaluation.calcArea(this, '{:url('Evaluation/calcArea')}')">
-                <option>几厅-几室-几厨-几卫</option>
+                <option value="">几厅-几室-几厨-几卫</option>
+                <?php if(isset($data['layoutData'])):foreach($data['layoutData'] as $v):?>
+                    <option value="{$v.id}" <?php if(isset($param['layout_id']) && $param['layout_id'] == $v['id']):?>selected<?php endif;?>>{$v.name}</option>
+                <?php endforeach;endif;?>
             </select>
         <div class="house-detail">
-            墙面面积：210㎡ 地面面积320㎡ 周长：300㎡ 总面积：500㎡
+            <?php if(isset($data['layoutArea'])):?>
+            墙面面积：{$data['layoutArea']['wall_area']}㎡ 地面面积{$data['layoutArea']['floor_area']}㎡ 周长：{$data['layoutArea']['perimeter']}㎡ 总面积：{$data['layoutArea']['total_area']}㎡
+            <?php endif;?>
         </div>
         </div>
         <!-- 辅材包 -->
         <div class="secondary-steel">
-            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><a href="{:url('Evaluation/accessories')}" class="a-button">去挑选</a>
+            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><?php if($data['auxiliary']):?>
+                {$data.auxiliary.title}（{$data.auxiliary.price}
+                {$data.auxiliary.unit}
+                    <?php if(isset($data['layoutArea'])):?>
+                        ×{$data.layoutArea.total_area}={$data.auxiliary.price*$data.layoutArea.total_area}
+                    <?php endif;?>）
+                <?php endif;?>
+                <?php if(!isset($param['confirm']) || !$param['confirm']):?>
+                <a href="javascript:;" class="a-button" onclick="evaluation.chooseMaterial('{:url('Evaluation/accessories')}')">去挑选</a>
+                <?php endif;?>
         </div>
         <div class="material">
+            {foreach $data.usageArea as $k=>$v}
+                <?php if($k == 0):?>
             <div class="material-list">
                 <span class="house-choose"><img src="/static/index/img/zhucai1.png">主材</span>
-                <span class="material-choose">客厅</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">重新挑选</a>     
+                <span class="material-choose">{$v.name}</span>
+                <?php if($data['material'] && $data['material']['area_'.$v['id']]):?>
+                    <span class="material-choose-detail">
+                    <?php foreach ($data['material']['area_'.$v['id']] as $sk=>$sv):?>
+                        <?php if($sk!=0):?>、<?php endif;?>
+                        {$sv.title}（{$sv.price}{$sv.unit}×{$sv['num']}）
+                            
+                    <?php endforeach;?>
+                </span>
+                    <?php if(!isset($param['confirm']) || !$param['confirm']):?>
+                <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id']])}')" class="a-button">继续</a>
+                <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id'], 'init_choose'=>1])}')" class="a-button">重新挑选</a>
+                    <?php endif;?>
+                <?php else:?>
+                    <?php if(!isset($param['confirm']) || !$param['confirm']):?>
+                <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id']])}')" class="a-button">去挑选</a>
+                    <?php endif;?>
+                <?php endif;?>
             </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">主卧</span><span class="material-choose-detail">地砖（20元/㎡×200㎡=4000元）、水龙头（3个）</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">重新挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">次卧</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">客卧</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">客厅阳台</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">生活阳台</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">客卫生间</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">主卫生间</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
-            <div class="material-list">
-                <span class="house-choose"></span>
-                <span class="material-choose">厨房</span><a href="{:url('Material/index', ['choose_material'=>1])}" class="a-button">去挑选</a>
-            </div>
+                <?php else:?>
+                <div class="material-list">
+                    <span class="house-choose"></span>
+                    <span class="material-choose">{$v.name}</span>
+                    <?php if($data['material'] && isset($data['material']['area_'.$v['id']])):?>
+                    <span class="material-choose-detail">
+                        <?php foreach ($data['material']['area_'.$v['id']] as $sk=>$sv):?>
+                            <?php if($sk!=0):?>、<?php endif;?>
+                            {$sv.title}（{$sv.price}{$sv.unit}×{$sv['num']}）
+                                
+                        <?php endforeach;?>
+                    </span>
+                        <?php if(!isset($param['confirm']) || !$param['confirm']):?>
+                    <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id']])}')" class="a-button">继续</a>
+                    <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id'], 'init_choose'=>1])}')" class="a-button">重新挑选</a>
+                        <?php endif;?>
+                    <?php else:?>
+                        <?php if(!isset($param['confirm']) || !$param['confirm']):?>
+                    <a href="javascript:;" onclick="evaluation.chooseMaterial('{:url('Material/index', ['choose_material'=>1, 'area_id'=>$v['id']])}')" class="a-button">去挑选</a>
+                        <?php endif;?>
+                    <?php endif;?>
+                </div>
+                <?php endif;?>
+            {/foreach}
+            <?php if(!isset($param['confirm']) || !$param['confirm']):?>
             <div class="confirm">
-                <span class="house-choose"></span></span><a href="inventory.html" class="a-button">确定</a>
+                <span class="house-choose"></span></span><a href="javascript:;" onclick="evaluation.clickConfirm('{:url('Evaluation/index', ['confirm'=>1])}')" class="a-button">确定</a>
             </div>
+            <?php endif;?>
         </div>
     </div>
+    <?php if(isset($param['confirm']) && $param['confirm']):?>
+    <div class="inventory">
+        <p>清单</p>
+        <p>楼盘：{$list.estate.name ?? ''} 户型：{$list.layout.name ?? ''}（
+            <?php if(isset($list['layoutAttr'])):?>
+                <?php foreach ($list['layoutAttr'] as $v):?>
+                    {$v.name}：墙面面积：{$v.wall_area}㎡ 地面面积：{$v.floor_area}㎡ 周长：{$v.perimeter}m
+                <?php endforeach;?>
+             <?php endif;?>
+        ）</p>
+        <p>辅材包：<?php if(isset($data['auxiliary'])):?>
+        {$data['auxiliary']['name'] ?? ''}
+        （{$data['auxiliary']['summary']}）￥{$data.auxiliary.price}
+                {$data.auxiliary.unit}
+                    <?php if(isset($data['layoutArea'])):?>
+                        ×{$data.layoutArea.total_area}㎡={$data.auxiliary.price*$data.layoutArea.total_area}
+                    <?php endif;?>
+                <?php endif;?>
+        </p>
+        <p>主材包：
+            <?php $k = 0;?>
+            <?php foreach ($data['material'] as $v):?>
+                {foreach $v as $sv}
+                <?php $k++;?>
+                <?php if($k!=0):?>、<?php endif;?>
+                    {$sv.title}（{$sv.price}{$sv.unit}×{$sv['num']}={$sv.price*$sv.num}元）
+                {/foreach}
+            <?php endforeach;?>
+        </p>
+    </div>
+    <?php endif;?>
 <!-- 尾部 -->
     <!-- 860px以上显示 -->
     {include file="public/footer" /}

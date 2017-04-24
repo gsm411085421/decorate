@@ -55,7 +55,12 @@
 	        <div class="detail-box" id="detail-data"></div>	        
 	      </div>
       	<div class="import-box">
-        	<a href="javascript:void(0);" onclick="auxiliary.clickConfirm('{:url('Evaluation/index')}')">确定</a>
+            <form action="{:url('Evaluation/setAuxiliary')}" method="get">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="layout_id" value="{$param['layout_id'] ?? ''}">
+                <input type="hidden" name="estate_id" value="{$param['estate_id'] ?? ''}">
+        	   <a href="javascript:;" onclick="auxiliary.clickConfirm(this)">确定</a>
+            </form>
         </div>
 	      </div>
 	    </div>
@@ -67,6 +72,6 @@
     {include file="public/footer"}
 </body>
 <script type="text/javascript">
-var auxiliary = new auxiliary();
+var auxiliary = new loadHtml();
 </script>
 </html>
