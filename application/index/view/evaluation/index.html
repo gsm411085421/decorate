@@ -48,7 +48,7 @@
         </div>
         <!-- 辅材包 -->
         <div class="secondary-steel">
-            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><?php if($data['auxiliary']):?>
+            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><?php if(isset($data['auxiliary'])):?>
                 {$data.auxiliary.title}（{$data.auxiliary.price}
                 {$data.auxiliary.unit}
                     <?php if(isset($data['layoutArea'])):?>

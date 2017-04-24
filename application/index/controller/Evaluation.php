@@ -18,7 +18,9 @@ class Evaluation extends Base
         $param = $this->request->param();
         //辅材
         $auxiliaryId = Cookie::has('auxiliary') ? Cookie::get('auxiliary') : 0;
-        $data['auxiliary'] = parent::model('Auxiliary')->getOne($auxiliaryId)->toArray();
+        if ($auxiliaryId) {
+            $data['auxiliary'] = parent::model('Auxiliary')->getOne($auxiliaryId)->toArray();
+        }
         //主材
         $allMaterial = to_array(parent::model('Materials')->getAll());
         $materialId  = Cookie::has('material') ? Cookie::get('material') : [];
