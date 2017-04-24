@@ -48,13 +48,16 @@
         </div>
         <!-- 辅材包 -->
         <div class="secondary-steel">
-            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span><?php if(isset($data['auxiliary'])):?>
+            <span class="house-choose"><img src="/static/index/img/fucai1.png">辅材包</span>
+                <span id="auxiliary-content">
+                    <?php if(isset($data['auxiliary'])):?>
                 {$data.auxiliary.title}（{$data.auxiliary.price}
                 {$data.auxiliary.unit}
                     <?php if(isset($data['layoutArea'])):?>
                         ×{$data.layoutArea.total_area}={$data.auxiliary.price*$data.layoutArea.total_area}
-                    <?php endif;?>）
+                    <?php endif;?>元）
                 <?php endif;?>
+                </span>
                 <?php if(!isset($param['confirm']) || !$param['confirm']):?>
                 <a href="javascript:;" class="a-button" onclick="evaluation.chooseMaterial('{:url('Evaluation/accessories')}')">去挑选</a>
                 <?php endif;?>
@@ -125,11 +128,11 @@
              <?php endif;?>
         ）</p>
         <p>辅材包：<?php if(isset($data['auxiliary'])):?>
-        {$data['auxiliary']['name'] ?? ''}
+        {$data['auxiliary']['title'] ?? ''}
         （{$data['auxiliary']['summary']}）￥{$data.auxiliary.price}
                 {$data.auxiliary.unit}
                     <?php if(isset($data['layoutArea'])):?>
-                        ×{$data.layoutArea.total_area}㎡={$data.auxiliary.price*$data.layoutArea.total_area}
+                        ×{$data.layoutArea.total_area}㎡={$data.auxiliary.price*$data.layoutArea.total_area}元
                     <?php endif;?>
                 <?php endif;?>
         </p>
@@ -138,7 +141,7 @@
             <?php foreach ($data['material'] as $v):?>
                 {foreach $v as $sv}
                 <?php $k++;?>
-                <?php if($k!=0):?>、<?php endif;?>
+                <?php if($k!=1):?>、<?php endif;?>
                     {$sv.title}（{$sv.price}{$sv.unit}×{$sv['num']}={$sv.price*$sv.num}元）
                 {/foreach}
             <?php endforeach;?>
@@ -153,3 +156,8 @@
 var evaluation = new evaluation();
 </script>
 </html>
+<style type="text/css">
+    .inventory{
+        margin-top: 20px;
+    }
+</style>

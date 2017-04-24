@@ -16,7 +16,9 @@ class Material extends Base
     {
         $param = $this->request->param();
         if (isset($param['init_choose']) && $param['init_choose']) {
-            Cookie::delete('material');
+            $cookieData = Cookie::get('material');
+            unset($cookieData['area_'.$param['area_id']]);
+            Cookie::set('material', $cookieData);
         }
         //主材数据
         $data['data'] = parent::model('Materials')->getAllMaterials($param);
