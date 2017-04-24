@@ -131,7 +131,7 @@
         var $obj = $(obj);
         bayMax.uploadImg(function(res){
             if (res.code) {
-                var src = res.data.replace('\\', '/');
+                var src = '/uploads/'+res.data.savename..replace('\\', '/');
                 $obj.attr('src', src)
                 $obj.siblings(':hidden').val(src)
             }

@@ -21,7 +21,7 @@
                         <th>上次登录</th>
                         <th>登录次数</th>
                         <th>创建时间</th>
-                        <th>所属用户组</th>
+                        <!-- <th>所属用户组</th> -->
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -35,11 +35,11 @@
                         <td>{$v.last_login_time ? : '未登录'}</td>
                         <td>{$v.login_times}</td>
                         <td>{$v.create_at}</td>
-                        <td>
+                        <!-- <td>
                             {foreach $v.groups_text as $groupText}
                             <span class="label label-default">{$groupText}</span>
                             {/foreach}
-                        </td>
+                        </td> -->
                         <td>
                             {eq name="$v['status']" value="1"}
                             <span class="label label-success" onclick="adminStatus(this, {$v.id}, 0)" style="cursor: pointer;">正常</span>

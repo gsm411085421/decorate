@@ -28,6 +28,8 @@ class Base extends Controller
         }
         $this->view->header = $this->header;
         $this->view->desc   = $this->desc;
+        $this->view->userInfo = \think\Db::name('Admin')->field(true)
+            ->where('id', $this->uid)->find();
     }
 /**
  * 登录检查
