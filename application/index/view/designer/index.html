@@ -7,7 +7,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="/static/index/css/zui.min.css">
     <link rel="stylesheet" type="text/css" href="/static/index/css/common.css">
-    <link rel="stylesheet" type="text/css" href="/static/index/css/aboutus.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/designer.css">
     <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
     <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
     <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
@@ -15,16 +15,31 @@
 <body>
 <!-- 头部 -->
     {include file="public/nav" /}
-<!-- 尾部 -->
 <!-- content -->
-    <div class="content">
-        <div class="content-left">
-            <img src="/static/index/img/aboutus_02.png" width="100%" height="640px">
-        </div>
-        <div class="content-right">
-            {$usInfo.about_us}
+<div class="content">
+    <div class="designer-main">
+        <img src="{$designerImg}">
+    </div>
+    <div class="word-content">
+        <p>{$designerWords}</p>
+        <p>{$usInfo.key_words}</p>
+    </div>
+    {volist name='designer' id='v'}
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 oher-designer">
+        <img src="{$v.head_img}" class="designer-img">
+        <div class="designer-detail">
+            <p>{$v.name}</p>
+            <p>{$v.rank}</p>
+            <p>{$v.introduce}</p>
+            <p><a href="{:url('Designer/produce',['id'=>$v['id']])}">Ta的作品</a></p>
         </div>
     </div>
+    {/volist}
+    </div>
+<div>
+    <div style="clear: both;"></div>
+</div>
+<!-- 尾部 -->
     {include file="public/footer" /}
 </body>
 <script type="text/javascript">

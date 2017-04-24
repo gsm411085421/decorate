@@ -1,7 +1,4 @@
 <?php
-/**
- * 材料
- */
 
 namespace app\index\controller;
 

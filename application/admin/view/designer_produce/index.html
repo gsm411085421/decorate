@@ -30,6 +30,7 @@
           <th>序号</th>
           <th>作品名字</th>
           <th>作品简介</th>
+          <th>作品封面</th>
           <th>状态</th>
           <th>操作</th>
         </thead>
@@ -39,6 +40,7 @@
               <td>{$i}</td>
               <td>{$v.name}</td>
               <td>{$v.introduce}</td>
+              <td><img src="{$v.img_url}" style="width: 66px; height: 66px"></td>
               <td>
                 {eq name="v.status" value="1"}
                 <span class="label label-success" onclick="handle.changeStatus(this,{$v.id},{$v.status})" style="cursor:pointer">开启</span>

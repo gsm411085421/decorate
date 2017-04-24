@@ -1,10 +1,13 @@
 <?php
 namespace app\index\controller;
 
+use think\Loader;
+
 class Index extends Base
 {
     public function index()
-    {
-        return $this->fetch();
+    {   
+        $data = Loader::model('ConfigImg')->getAll();
+        return $this->fetch('',['configImg'=>$data]);
     }
 }
