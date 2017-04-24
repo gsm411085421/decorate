@@ -29,7 +29,7 @@ class Upload
     {
         $file = Request::instance()->file($fieldName);
         $info = $file->validate($this->validateRule['image'])
-                ->move(ROOT_PATH. 'public'. DS. 'uploads' .DS.'images');
+                ->move(ROOT_PATH. 'public'. DS. 'uploads');
         return $info ? $info : $file->getError();
 
         /*$file = Request::instance()->file($fieldName);

@@ -4,6 +4,8 @@ namespace app\admin\model;
 class Designer extends Base
 {     
     protected $pageSize = 20;
+
+    protected $auto = ['update_at'];
     /**
      * 显示设计者
      * @param  array   $where    [description]
@@ -34,4 +36,10 @@ class Designer extends Base
         $data = self::with('produceDesigner')->where('id',$id)->select();
         return collection($data)->toArray();
     }
+
+    public function setUpdateAtAttr($value)
+    {
+        return date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
+    }
+
 }

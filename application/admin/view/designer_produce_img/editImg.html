@@ -40,9 +40,9 @@
 <script type="text/javascript">
 
     var requestUrl = {
-        add : "{:url('DesignerProduceImg/editImg')}",
-        lists : "{:url('DesignerProduceImg/index',['id'=>$list.produce_id])}",
-        upload : "{:url('Upload/image')}"
+        add : "{:url('DesignerProduceImg/editImg',['designer_id'=>$designer_id])}",
+        lists : "{:url('DesignerProduceImg/index',['id'=>$list.produce_id,'designer_id'=>$designer_id])}",
+        upload : "{:url('Upload/designerImage')}"
     };
 
 
@@ -88,9 +88,7 @@
             $.post(requestUrl.add,data,function(e){
                  if(e.code==1){
                     bayMax.msg(e.msg,function(){
-                        {literal}
                         $.pjax({ url: requestUrl.lists , container: '#pjax-container'});
-                        {/literal}
                     });
                 }else{
                     bayMax.warning(e.msg);

@@ -8,6 +8,8 @@ class DesignerProduce extends Base
     
      protected $pageSize = 20;
 
+     protected $auto = ['update_at'];
+
     /**
      * 根据设计者id查询作品集
      * @param  [type] $id [description]
@@ -44,7 +46,10 @@ class DesignerProduce extends Base
         return $this->field(true)->where('designer_id',$id)->delete();
     }
 
-
+    public function setUpdateAtAttr($value)
+    {
+        return date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
+    }
 
 
 }
