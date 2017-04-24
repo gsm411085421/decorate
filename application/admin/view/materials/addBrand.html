@@ -57,7 +57,7 @@
         var $obj = $(this);
         bayMax.uploadImg(function(res){
             if (res.code) {
-                var src = '/uploads/'+res.data.replace('\\', '/');
+                var src = '/uploads/'+res.data.savename.replace('\\', '/');
                 $obj.attr('src', src)
                 $("#hidden-logo").val(src)
             }

@@ -81,4 +81,13 @@ class Layout extends Base
             return ['code'=>0, 'msg'=>'非法提交'];
         }
     }
+
+    /**
+     * 删除户型
+     * @return [type] [description]
+     */
+    public function layoutDelete ()
+    {
+        return parent::model('Layout')->deleteOne($this->request->post('id'));
+    }
 }

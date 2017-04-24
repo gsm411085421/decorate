@@ -31,6 +31,26 @@ class System extends Base
         $data = $systemConfig->data();
         return $this->fetch('',['data'=>$data]);
     }
+
+    public function editDesignerImg()
+    {   
+        $this->view->desc = '网站信息';
+        $systemConfig = new SystemConfig();
+        $data = $systemConfig->data();
+        return $this->fetch('',['list'=>$data]);
+    }
+
+    /**
+     * 设计师页面图片
+     * @return [type] [description]
+     */
+    public function designer()
+    {
+        $this->view->desc = '设计师页面头部图片';
+        $systemConfig = new SystemConfig();
+        $data = $systemConfig->data();
+        return $this->fetch('',['data'=>$data]);
+    }
     
     /**
      * 更新系统配置

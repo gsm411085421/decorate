@@ -1,0 +1,91 @@
+<section class="content-header">
+  <h1>
+    {$header}
+    <small>{$desc}</small>
+  </h1>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <form class="form-horizontal" id="img">
+                <div class="form-group">
+                    <label for="inputImg" class="col-sm-2 control-label">图片:</label>
+                    <div class="col-sm-8">
+                        <input id="goods_image" name="designer_img" type="file"  class="file-loading">
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <button onclick="javascript:history.back(-1);" type="button" class="btn btn-default " data-dismiss="modal">返回</button>
+                        <button type="button" onclick="handle.add()"  class="btn btn-primary pull-right">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    var requestUrl = {
+        lists : "{:url('System/designer')}",
+        upload : "{:url('Upload/designerImage')}",
+        edit : "{:url('System/update')}"
+    };
+
+
+    var filePath = {
+        goodsImage : "{$list.designer_img}"
+    };
+
+
+    function upload_image(dom, name, max, options = {})
+    {   
+        var image = '<img src="'+filePath.goodsImage+'" class="file-preview-image" alt="" title="" width="150px">';
+        param = {
+            language: 'zh', //设置语言
+            uploadUrl: requestUrl.upload + '?fieldName=' + name, //上传的地址
+            allowedFileExtensions : ['jpg','jpeg','png','gif'],//接收的文件后缀
+            maxFileSize: 2097152,//2M
+            maxFileCount : max,
+            previewSettings:{
+                image: {width: "120px", height: "120px"},
+            },
+            initialPreview: image,
+            initialPreviewShowDelete: true,
+        }
+        if(options){
+            param = $.extend(param, options);
+        }
+        dom.fileinput(param).on('fileuploaded', function(event, file, previewId, index, reader) {
+            if(file.response.code){
+                filePath.goodsImage = file.response.data;
+            }else{
+                bayMax.warning(file.response.msg);
+            }
+        });
+    }
+
+    upload_image($('#goods_image'), 'designer_img', 1);
+
+
+    var handle = {
+        add : function(){
+            var data = $('#img').serializeArray();
+            data.push({name:'designer_img',value:filePath.goodsImage});
+            $.post(requestUrl.edit,data,function(e){
+                 if(e.code==1){
+                    bayMax.msg(e.msg,function(){
+                        {literal}
+                        $.pjax({ url: requestUrl.lists , container: '#pjax-container'});
+                        {/literal}
+                    });
+                }else{
+                    bayMax.warning(e.msg);
+                }
+            })
+        }
+    };
+    
+   
+</script>

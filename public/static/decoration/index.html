@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/zui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/icon/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css">
+    <script type="text/javascript" src='js/jquery-1.9.1.min.js'></script>
+    <script type="text/javascript" src='js/zui.min.js'></script>
+    <script type="text/javascript" src='js/jquery.bxslider.js'></script>
+</head>
+<body>
+<!-- 头部 -->
+    <header>
+    <div class="logo">
+        <img src="img/logo.png" alt=""><span>黑白调建筑装饰工程有限公司</span>
+    </div>
+    <!-- 860px以上显示 -->
+        <ul class="header-nav">
+            <li><a href="aboutus.html">关于我们</a></li>
+            <li><a href="appraisal.html">装修估价</a></li>
+            <li><a href="designer.html">设计师简介</a></li>
+            <li><a href="stuff.html">材料展示</a></li>
+            <li><a href="index.html">首页</a></li>
+        </ul>
+        <!-- 860px一下显示 -->
+        <ul class="nav nav-primary drop-list">
+          <li>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="your/nice/url">首页<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="index.html">首页</a></li>
+              <li><a href="stuff.html">材料展示</a></li>
+              <li><a href="designer.html">设计师简介</a></li>
+              <li><a href="appraisal.html">装修估价</a></li>
+              <li><a href="aboutus.html">关于我们</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div id="myNiceCarousel" class="carousel slide" data-ride="carousel">
+          <!-- 圆点指示器 -->
+          <ol class="carousel-indicators">
+            <li data-target="#myNiceCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myNiceCarousel" data-slide-to="1"></li>
+            <li data-target="#myNiceCarousel" data-slide-to="2"></li>
+          </ol>
+
+      <!-- 轮播项目 -->
+      <div class="carousel-inner">
+        <div class="item active">
+          <img alt="First slide" src="./img/lunbo_1.png">
+        </div>
+        <div class="item">
+          <img alt="Second slide" src="./img/lunbo_2.png">
+        </div>
+        <div class="item">
+          <img alt="Third slide" src="./img/lunbo_1.png">
+        </div>
+      </div>
+
+      <!-- 项目切换按钮 -->
+        <span class="iconfont icon-left lunbo-left" data-slide="prev" href="#myNiceCarousel"></span>
+        <span class="iconfont icon-right lunbo-right" data-slide="next" href="#myNiceCarousel"></span>
+    </div>
+    </header>
+    <div class="content">
+        <p class="brand-title">品牌 BRAND</p>
+        <div class="slider3">
+
+	      <a href="javascript:void(0);" class="slide"><img src="img/brand_1.png" alt=""></a>
+	
+	      <a href="javascript:void(0);" class="slide"><img src="img/brand_2.png" alt=""></a>
+	
+	      <a href="javascript:void(0);" class="slide"><img src="img/brand-1.png" alt=""></a>
+	
+	      <a href="javascript:void(0);" class="slide"><img src="img/brand_2.png" alt=""></a>
+	
+	      <a href="javascript:void(0);" class="slide"><img src="img/brand-1.png" alt=""></a>
+	
+
+    	</div>
+    </div>
+    <!-- 估价入口 -->
+    <div class="entry">
+        <div>
+        <a href="appraisal.html" title="">
+            我要估价
+        </a>
+        </div>
+    </div>
+<!-- 尾部 -->
+    <!-- 860px以上显示 -->
+    <footer id="footer-pc">
+        <div class="footer-left">
+            <img src="img/logo.png"><br>
+            <img src="img/bottom_logo.png" alt="">
+        </div>
+        <div class="footer-center">
+            <p class="address"><i class="iconfont icon-address"></i><span>宜宾翠屏区南岸南丝绸路吉祥名都3幢负一层</span></p>
+            <p class="phone"><i class="iconfont icon-phone"></i><span>联系电话：18200443549</span></p>
+        </div>
+        <div class="footer-right">
+            <img src="img/qrcode_for_gh_8866f2682fd8_258.jpg">
+        </div>
+        <div class="footer-bottom">
+                成都咔吧科技有限公司&emsp;蜀ICP备150220285号&emsp;©&emsp;2015&emsp;dianjinzi，inc.All rights reserved.
+        </div>
+    </footer>
+    <!-- 860px以下显示 -->
+    <footer id="footer-phone">
+        <p class="address"><i class="iconfont icon-address"></i><span>宜宾翠屏区南岸南丝绸路吉祥名都3幢负一层</span></p>
+        <p class="phone"><i class="iconfont icon-phone"></i><span>联系电话：18200443549</span></p>
+        <p>成都咔吧科技有限公司&emsp;蜀ICP备150220285号&emsp;©&emsp;2015&emsp;dianjinzi，inc.All rights reserved.</p>
+    </footer>
+</body>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+          $('.slider3').bxSlider({
+
+            slideWidth: 200,
+
+            minSlides: 2,
+
+            maxSlides: 4,
+
+	  moveSlides: 1,
+
+            slideMargin: 5
+
+          });
+
+        });
+</script>
+</html>

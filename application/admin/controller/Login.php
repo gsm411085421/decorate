@@ -11,6 +11,11 @@ class Login extends \think\Controller
     private static $_session_uid   = 'uid';
     private static $_session_uinfo = 'uinfo';
 
+    public function _initialize()
+    {
+        Session::init();
+    }
+    
     public function index()
     {
         $token = md5($this->request->server('REQUEST_TIME_FLOAT'));

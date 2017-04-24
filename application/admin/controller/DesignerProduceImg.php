@@ -8,8 +8,9 @@ class DesignerProduceImg extends Base
 
     /**
      * 作品图片页面
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param  [type] $id          作品id
+     * @param  [type] $designer_id 设计师id
+     * @return [type]              [description]
      */
     public function index($id,$designer_id)
     {   
@@ -20,7 +21,9 @@ class DesignerProduceImg extends Base
 
     /**
      * 添加图片页面
-     * @param [type] $produce_id [description]
+     * @param [type] $produce_id 作品id
+     * @param  [type] $designer_id 设计师id
+     * @return [type]              [description]
      */
     public function addImg($produce_id,$designer_id)
     {   
@@ -34,7 +37,8 @@ class DesignerProduceImg extends Base
 
     /**
      * 编辑图片页面
-     * @param  [type] $id [description]
+     * @param  [type] $id 主键id
+     * @param  [type] $designer_id 设计师id
      * @return [type]     [description]
      */
     public function editImg($id,$designer_id)

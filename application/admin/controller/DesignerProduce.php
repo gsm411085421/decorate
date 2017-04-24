@@ -6,7 +6,7 @@ class DesignerProduce extends Base
     protected $header = '设计师';
     /**
      * 作品集页面
-     * @param  [type] $id [description]
+     * @param  [type] $id 设计师id
      * @return [type]     [description]
      */
     public function index($id)
@@ -30,7 +30,7 @@ class DesignerProduce extends Base
 
     /**
      * 添加作品集
-     * @param [type] $designer_id [description]
+     * @param [type] $designer_id 设计师id
      */
     public function addProduce($designer_id)
     {   
@@ -44,7 +44,7 @@ class DesignerProduce extends Base
 
     /**
      * 编辑作品集
-     * @param  [type] $id [description]
+     * @param  [type] $id 主键id
      * @return [type]     [description]
      */
     public function editProduce($id)

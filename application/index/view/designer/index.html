@@ -18,49 +18,25 @@
 <!-- content -->
 <div class="content">
     <div class="designer-main">
-        <img src="/static/index/img/designer_1.png">
+        <img src="{$designerImg}">
     </div>
     <div class="word-content">
-        <p>设计师 Designer</p>
-        <p>设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师设计师</p>
+        <p>{$designerWords}</p>
+        <p>{$usInfo.key_words}</p>
     </div>
+    {volist name='designer' id='v'}
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 oher-designer">
-        <img src="/static/index/img/designer_2.png" class="designer-img">
+        <img src="{$v.head_img}" class="designer-img">
         <div class="designer-detail">
-            <p>zhangxinyan</p>
-            <p>高级设计师</p>
-            <p>高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师</p>
-            <p><a href="TAworks.html">Ta的作品</a></p>
+            <p>{$v.name}</p>
+            <p>{$v.rank}</p>
+            <p>{$v.introduce}</p>
+            <p><a href="{:url('Designer/produce',['id'=>$v['id']])}">Ta的作品</a></p>
         </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 oher-designer">
-        <img src="/static/index/img/designer_3.png" class="designer-img">
-        <div class="designer-detail">
-            <p>zhangxinyan</p>
-            <p>高级设计师</p>
-            <p>高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师</p>
-            <p><a href="TAworks.html">Ta的作品</a></p>
-        </div>
+    {/volist}
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 oher-designer">
-        <img src="/static/index/img/designer_4.png" class="designer-img">
-        <div class="designer-detail">
-            <p>zhangxinyan</p>
-            <p>高级设计师</p>
-            <p>高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师</p>
-            <p><a href="TAworks.html">Ta的作品</a></p>
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 oher-designer">
-        <img src="/static/index/img/designer_5.png" class="designer-img">
-        <div class="designer-detail">
-            <p>zhangxinyan</p>
-            <p>高级设计师</p>
-            <p>高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师高级设计师</p>
-            <p><a href="TAworks.html">Ta的作品</a></p>
-        </div>
-    </div>
-    </div>
+<div>
     <div style="clear: both;"></div>
 </div>
 <!-- 尾部 -->

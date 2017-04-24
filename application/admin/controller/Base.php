@@ -19,7 +19,7 @@ class Base extends Controller
     public function _initialize()
     {
         Session::init();
-        // $this->_checkLogin(); // 登录检查
+        $this->_checkLogin(); // 登录检查
 
         $this->view->config('tpl_cache', false); // 关闭模板缓存
         if ($this->request->isPjax()) {
@@ -28,6 +28,8 @@ class Base extends Controller
         }
         $this->view->header = $this->header;
         $this->view->desc   = $this->desc;
+        $this->view->userInfo = \think\Db::name('Admin')->field(true)
+            ->where('id', $this->uid)->find();
     }
 /**
  * 登录检查

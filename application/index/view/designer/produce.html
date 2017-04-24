@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="/static/index/css/zui.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/index/css/common.css">
+        <link rel="stylesheet" type="text/css" href="/static/index/css/TAworks.css">
+        <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
+        <link rel="stylesheet" type="text/css" href="/static/index/css/jquery.bxslider.css">
+        <script type="text/javascript" src='/static/index/js/jquery-1.9.1.min.js'></script>
+        <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
+        <script type="text/javascript" src='/static/index/js/jquery.bxslider.js'></script>
+</head>
+<style type="text/css">
+
+                </style>
+<body>
+<!-- 头部 -->
+  {include file="public/nav" /}
+<!-- 尾部 -->
+<!-- content -->
+        <div class="content">
+                <div id="myNiceCarousel" class="carousel slide" data-ride="carousel">
+
+            <!-- 轮播项目 -->
+            <div class="carousel-inner">
+                {volist name="data[0]['projects']" id='v'}
+                 
+                <div class="item">
+                    <img alt="First slide" src="{$v}">
+                </div>
+                
+                {/volist}
+            </div>
+        
+            <!-- 项目切换按钮 -->
+                <span class="iconfont icon-left lunbo-left" data-slide="prev" href="#myNiceCarousel"></span>
+                <span class="iconfont icon-right lunbo-right" data-slide="next" href="#myNiceCarousel"></span>
+        </div>
+                <div class="slider3">
+                    {volist name="data" id='v'}
+                    <a href="javascript:void(0);" class="slide"><img src="{$v.img}" data-id="{$v.id}" alt=""></a>
+                    {/volist}
+        
+
+                </div>
+        <!-- 860px以上显示 -->
+   {include file="public/footer" /}
+</body>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+                    $('.slider3').bxSlider({
+
+                        slideWidth: 200,
+
+                        minSlides: 2,
+
+                        maxSlides: 4,
+
+                        moveSlides: 1,
+
+                        slideMargin: 5
+
+                    });
+
+                });
+
+var data = {:json_encode($data,320)};
+
+$(".slider3 a img").click(function(){
+    var id = $(this).attr('data-id');
+    var html = '';
+        $.each(data, function(index, item){
+            if (item.id == id) {
+                $.each(item.projects , function(pindex, src){
+                    html +=  '<div class="item">\
+                        <img alt="First slide" src="'+src+'">\
+                    </div>';
+                });
+            }
+        });
+        $('.carousel-inner').html(html);
+
+    });
+$('.item:first').addClass('active')
+$('.slider3 img').click(function(event) {
+    $('.item:first').addClass('active')
+});
+
+</script>
+</html>

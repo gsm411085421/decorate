@@ -1,7 +1,4 @@
 <?php
-/**
- * 估价
- */
 
 namespace app\index\controller;
 use think\Db;

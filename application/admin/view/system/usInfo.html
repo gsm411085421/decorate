@@ -10,22 +10,22 @@
     <div class="box-body">
         <div role="tabpanel" class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">基本信息</a></li>
-                <li role="presentation" ><a href="#convert"  aria-controls="convert" data-toggle="tab">关键字</a></li>
+                <li role="presentation" class="active"><a href="#usInfo" aria-controls="settings" role="tab" data-toggle="tab">基本信息</a></li>
+                <li role="presentation" ><a href="#key_words"  aria-controls="convert" data-toggle="tab">关键字</a></li>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="settings">
-                    <form class="form-horizontal" id="usInfo">
+                <div role="tabpanel" class="tab-pane active" id="usInfo">
+                    <form class="form-horizontal" id="usMessage">
                         <div class="form-group">  
                             <label  for="inputName" class="col-sm-2 control-label">地址:</label>
                             <div class="col-sm-8">
-                                <input id=""  type="text" name="address" value="{$data.address}" class="form-control" id="inputEmail3" placeholder="请输入地址">
+                                <input  type="text" name="address" value="{$data.address}" class="form-control"  placeholder="请输入地址">
                             </div>
                         </div>
                         <div class="form-group">  
                             <label  for="inputName" class="col-sm-2 control-label">联系电话:</label>
                             <div class="col-sm-8">
-                                <input id=""  type="text" name="phone" value="{$data.phone}" class="form-control" id="inputEmail3" placeholder="请输入联系电话">
+                                <input   type="text" name="phone" value="{$data.phone}" class="form-control" id="inputEmail3" placeholder="请输入联系电话">
                             </div>
                         </div>
                         <div class="form-group">
@@ -34,17 +34,31 @@
                                 <input id="goods_image" name="qrcode" type="file"  class="file-loading">
                             </div>
                         </div> 
+                        <div class="form-group">  
+                            <label  for="inputName" class="col-sm-2 control-label">底部备注:</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="remark" value="{$data.remark}" class="form-control"  placeholder="请输入底部备注">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <button class="btn btn-primary" style="margin-left: 74%" onclick="handle.update()">保存</button>
                         </div>
                     </form>
                 </div>
-                <div role="tabpanel" class="tab-pane " id="convert">
+                <div role="tabpanel" class="tab-pane " id="key_words">
                     <form class="form-horizontal" id="keyWords">
-                        <label for="inputImg" class="col-sm-2 control-label">设计师:</label>
-                        <textarea name="key_words" style="width: 72%;">{$data.key_words}</textarea>
+                        <div class="form-group">  
+                            <label  for="inputName" class="col-sm-2 control-label">设计师:</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="designer" value="{$data.designer}" class="form-control"  placeholder="请输入底部备注">
+                            </div>
+                        </div>
+                        <div class="form-group"> 
+                            <label for="inputImg" class="col-sm-2 control-label">设计师简介:</label>
+                            <textarea name="key_words" style="width: 72%;">{$data.key_words}</textarea>
+                        </div>
                         <div class="form-group">
-                            <button class="btn btn-primary" style="margin-left: 74%" onclick="handle.updateKeyWords()">保存</button>
+                            <button class="btn btn-primary" style="margin-left: 80%" onclick="handle.updateKeyWords()">保存</button>
                         </div>
                     </form>
                 </div>
@@ -64,7 +78,7 @@
         upload : "{:url('Upload/designerImage')}"
     }
 
-        var filePath = {
+    var filePath = {
         goodsImage : "{$data.qrcode}"
     };
 
@@ -102,7 +116,7 @@
     var handle = {
 
         update : function(){
-            var data = $("#usInfo").serializeArray();
+            var data = $("#usMessage").serializeArray();
             data.push({name:'qrcode',value:filePath.goodsImage});
             $.post(requestUrl.update,data,function(e){
                 if(e.code==1){
