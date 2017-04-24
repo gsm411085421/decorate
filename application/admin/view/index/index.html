@@ -5,5 +5,44 @@
   </h1>
 </section>
 <section class="content">
-    <h1>Index</h1>
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">系统信息</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="col-sm-6">
+          <table class="table table-bordered table-hover col-sm-6">
+              <tr>
+                  <td>服务器类型</td>
+                  <td>{$data.sys.sysType}</td>
+              </tr>
+              <tr>
+                  <td>服务器版本</td>
+                  <td>{$data.sys.version}</td>
+              </tr>
+              <tr>
+                  <td>服务器ip</td>
+                  <td>{$data.sys.ip}</td>
+              </tr>
+              <tr>
+                  <td>PHP版本</td>
+                  <td>{$data.sys.phpVersion}</td>
+              </tr>
+          </table>
+        </div>
+        <div class="col-sm-6">
+          <table class="table table-bordered table-hover col-sm-6">
+                <tr>
+                    <td>访问量</td>
+                    <td>{$data.sys.clickNum}</td>
+                </tr>
+                <tr>
+                    <td>当前用户</td>
+                    <td>{$data.admin}</td>
+                </tr>
+          </table>
+        </div>
+    </div>
+</div>
 </section>
