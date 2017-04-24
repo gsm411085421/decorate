@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/static/index/css/zui.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/icon/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="/static/index/css/accessories.css">
+    <script type="text/javascript" src='/static/index/js/jquery-3.2.1.min.js'></script>
+    <script type="text/javascript" src='/static/index/js/zui.min.js'></script>
+    <script type="text/javascript" src='/static/index/js/handle.js'></script>
+</head>
+<body>
+<!-- 头部 -->
+    {include file="public/nav"}
+    <!--banner-->
+    <div class="banner">
+		<img src="/static/index/img/stuff_1.png" alt="">
+	</div>
+	<!--主体部分-->
+	<div class="material-main">
+		<div class="title">辅料展示<span>Decorative Materials</span></div>
+		<div class="product">
+			<div class="product-box">
+                {foreach $data as $v}
+				<div class="product-list">
+					<img src="{$v.cover}" alt="">
+					<div>
+						<div class="shade"></div>
+						<div class="product-sum">
+							<h5>{$v.title}</h5>
+							<p>{$v.summary}</p>
+							<div>￥<span>{$v.price}</span>/m</div>
+							<a href="javascript:;" data-toggle="modal" data-target="#myModal" onclick="auxiliary.getDetail({$v.id}, '{:url('Evaluation/accessoriesDetail')}')">查看详情</a>
+						</div>
+					</div>
+				</div>
+				{/foreach}
+			</div>
+		</div>
+	</div>
+	<!--产品详情-->
+	<div class="modal fade" id="myModal">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+	        <h4 class="modal-title" id="modal-title-data"></h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="banner" id="banner-data"></div>
+	        <div class="detail-box" id="detail-data"></div>	        
+	      </div>
+      	<div class="import-box">
+            <form action="{:url('Evaluation/setAuxiliary')}" method="get">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="layout_id" value="{$param['layout_id'] ?? ''}">
+                <input type="hidden" name="estate_id" value="{$param['estate_id'] ?? ''}">
+        	   <a href="javascript:;" onclick="auxiliary.clickConfirm(this)">确定</a>
+            </form>
+        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+		
+	<!-- 尾部 -->
+    <!-- 860px以上显示 -->
+    {include file="public/footer"}
+</body>
+<script type="text/javascript">
+var auxiliary = new loadHtml();
+</script>
+</html>

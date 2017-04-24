@@ -7,6 +7,8 @@ use think\Db;
 class Materials extends Base
 {
     protected $header = '主材管理';
+    protected $areaType = ['wall_area'=>'墙面面积','floor_area'=>'地面面积',
+        'top_area'=>'顶面面积','perimeter'=>'周长'];
 
     public function index()
     {
@@ -47,9 +49,10 @@ class Materials extends Base
 
         $this->view->desc = '编辑主材';
         return $this->fetch('', [
-            'form'   => $form,
-            'detail' => $detail,
-            'exists' => !empty($detail)
+            'form'      => $form,
+            'detail'    => $detail,
+            'areaType' => $this->areaType,
+            'exists'    => !empty($detail)
         ]);
     }
 

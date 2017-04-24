@@ -15,6 +15,32 @@
               <div class="tab-pane active" id="tab_1" style="padding:10px 0;">
                   <?=$form ?>
                   <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">计算面积？</label>
+                    <div class="col-sm-8">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="with_area" value="1" <?php if($exists && $detail['with_area'] == 1):?>checked<?php endif;?>>
+                            是
+                          </label>
+                          <label>
+                            <input type="radio" name="with_area" value="0" <?php if($exists && $detail['with_area'] == 0):?>checked<?php endif;?>>
+                            否
+                          </label>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group <?php if($exists && $detail['with_area']==0):?>hide<?php endif;?>" id="area-type">
+                    <label for="" class="col-sm-2 control-label">面积类型</label>
+                    <div class="col-sm-8">
+                        <select name="area_type" class="form-control">
+                          <option value="">请选择</option>
+                          {foreach $areaType as $k=>$v}
+                          <option value="{$k}">{$v}</option>
+                          {/foreach}
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
                       <label for="" class="col-sm-2 control-label">封面</label>
                       <div class="col-sm-8">
                           <img src="<?=$exists?$detail['cover']:'/static/dist/img/add-img.png' ?>" class="img-thumbnail" alt="Image" width="100" onclick="uploadImg(this)">
@@ -160,6 +186,14 @@
                     }
                 }, 'json');
             }
+        });
+        bayMax.pluginInit.icheck('.radio input');
+        $('.radio input').on('ifChecked', function(){
+          if($(this).val() == 1){
+            $('#area-type').removeClass('hide');
+          } else {
+            $('#area-type').addClass('hide');
+          }
         });
     })
 
