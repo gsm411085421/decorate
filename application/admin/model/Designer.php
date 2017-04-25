@@ -6,6 +6,20 @@ class Designer extends Base
     protected $pageSize = 20;
 
     protected $auto = ['update_at'];
+
+    protected $rule = [
+        'name' => 'require',
+        'head_img'=>'require',
+        'rank'=>'require',
+        'introduce'=>'require'
+    ];
+
+    protected $message = [
+        'name.require' => '设计师名字不能为空',
+        'head_img.require' => '设计师头像不能为空',
+        'rank.require' => '设计师级别不能为空',
+        'introduce.require' => '设计师简介不能为空',
+    ];  
     /**
      * 显示设计者
      * @param  array   $where    [description]

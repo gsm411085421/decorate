@@ -23,16 +23,26 @@
 <!-- 尾部 -->
 <!-- content -->
         <div class="content">
+            
+            <div class="intro" style="" id="pc">
+                <span style="" class="works" >{$data[0]['name']}</span>
+                <p style="">作品简介：<span>{$data[0]['introduce']}</span></p>
+            </div>
+
+            <div class="intro-phone" style="" id="phone">
+                <span class="intro-phone-title">{$data[0]['name']}</span>
+                <p>作品简介：<span>{$data[0]['introduce']}</span></p>
+            </div>
+
+
                 <div id="myNiceCarousel" class="carousel slide" data-ride="carousel">
 
             <!-- 轮播项目 -->
             <div class="carousel-inner">
-                {volist name="data[0]['projects']" id='v'}
-                 
+                {volist name="data[0]['projects']" id='v'} 
                 <div class="item">
                     <img alt="First slide" src="{$v}">
                 </div>
-                
                 {/volist}
             </div>
         
@@ -42,7 +52,7 @@
         </div>
                 <div class="slider3">
                     {volist name="data" id='v'}
-                    <a href="javascript:void(0);" class="slide"><img src="{$v.img}" data-id="{$v.id}" alt=""></a>
+                    <a href="javascript:;" class="slide"><img src="{$v.img}" data-id="{$v.id}" alt=""></a>
                     {/volist}
         
 
@@ -50,6 +60,47 @@
         <!-- 860px以上显示 -->
    {include file="public/footer" /}
 </body>
+<style type="text/css">
+.intro-phone{
+    background: #333333;
+    color: #fff;
+    width: 100%;
+    height: 150px;
+    padding-top: 10px;
+    display:none;
+}
+.intro-phone-title{
+        display:block;text-align: center;
+    }
+.intro-phone p{
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.intro{
+    width: 450px;height: 300px;position:absolute;right: 120px;top: 90px;background: rgba(0,0,0,0.5);color: #fff; z-index: 100;display: block;
+}
+.works{
+    display:block;text-align: center;margin-top: 50px;
+}
+.intro p{
+    white-space: pre-wrap; width: 80%;margin: 0 auto;margin-top: 30px;
+}
+    @media screen and (max-width: 860px) {
+        .intro{
+            display: none;
+        }
+        .intro-phone{
+            display: block
+        }
+        #myNiceCarousel{
+            margin-bottom: 0
+        }
+        .bx-wrapper{
+            margin: 0 auto;
+        }
+    }
+</style>
 <script type="text/javascript">
 
 $(document).ready(function(){
@@ -57,8 +108,6 @@ $(document).ready(function(){
                     $('.slider3').bxSlider({
 
                         slideWidth: 200,
-
-                        minSlides: 2,
 
                         maxSlides: 4,
 
@@ -72,11 +121,15 @@ $(document).ready(function(){
 
 var data = {:json_encode($data,320)};
 
-$(".slider3 a img").click(function(){
+$("body").on('click','.bx-wrapper a img',function(){
     var id = $(this).attr('data-id');
     var html = '';
         $.each(data, function(index, item){
             if (item.id == id) {
+                $('#pc span').text(item.name);
+                $('#pc p').text(item.introduce);
+                $('#phone span').text(item.name);
+                $('#phone p').text(item.introduce);
                 $.each(item.projects , function(pindex, src){
                     html +=  '<div class="item">\
                         <img alt="First slide" src="'+src+'">\
@@ -85,12 +138,10 @@ $(".slider3 a img").click(function(){
             }
         });
         $('.carousel-inner').html(html);
-
-    });
-$('.item:first').addClass('active')
-$('.slider3 img').click(function(event) {
-    $('.item:first').addClass('active')
+        $('.item:first').addClass('active');
 });
+
+$('.item:first').addClass('active');
 
 </script>
 </html>

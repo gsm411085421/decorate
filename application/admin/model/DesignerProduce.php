@@ -10,6 +10,20 @@ class DesignerProduce extends Base
 
      protected $auto = ['update_at'];
 
+
+    protected $rule = [
+        'name' => 'require',
+        'img_url'=>'require',
+        'introduce'=>'require'
+    ];
+
+    protected $message = [
+        'name.require' => '作品名字不能为空',
+        'img_url.require' => '请先上传图片',
+        'introduce.require' => '作品简介不能为空'
+    ];
+
+
     /**
      * 根据设计者id查询作品集
      * @param  [type] $id [description]

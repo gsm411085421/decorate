@@ -27,7 +27,7 @@ class DesignerProduce extends Base
                 ->select();
         $data = to_array($info);
         $res  = array_map(function($v){
-           $item = [
+            $item = [
                 'id'        => $v['id'],
                 'img'       => $v['img_url'],
                 'name'      => $v['name'],

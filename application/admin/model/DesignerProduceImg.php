@@ -3,6 +3,15 @@ namespace app\admin\model;
 
 class DesignerProduceImg extends Base
 {   
+
+    protected $rule = [
+        'img_url'=>'require'
+    ];
+
+    protected $message = [
+        'img_url.require' => '请先上传图片'
+    ];
+
     /**
      * 根据作品集id查询图片
      * @param  [type] $id [description]
