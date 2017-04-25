@@ -26,12 +26,12 @@
             
             <div class="intro" style="" id="pc">
                 <span style="" class="works" >{$data[0]['name']}</span>
-                <p style="">作品简介：<span>{$data[0]['introduce']}</span></p>
+                <p style=""><span>{$data[0]['introduce']}</span></p>
             </div>
 
             <div class="intro-phone" style="" id="phone">
                 <span class="intro-phone-title">{$data[0]['name']}</span>
-                <p>作品简介：<span>{$data[0]['introduce']}</span></p>
+                <p><span>{$data[0]['introduce']}</span></p>
             </div>
 
 
@@ -70,7 +70,8 @@
     display:none;
 }
 .intro-phone-title{
-        display:block;text-align: center;
+        display:block;
+        text-align: center;
     }
 .intro-phone p{
     width: 90%;
@@ -78,13 +79,26 @@
     overflow: hidden;
 }
 .intro{
-    width: 450px;height: 300px;position:absolute;right: 120px;top: 90px;background: rgba(0,0,0,0.5);color: #fff; z-index: 100;display: block;
+    width: 450px;
+    height: 300px;
+    position:absolute;
+    right: 120px;
+    top: 90px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+     z-index: 100;
+     display: block;
 }
 .works{
-    display:block;text-align: center;margin-top: 50px;
+    display:block;
+    text-align: center;
+    margin-top: 50px;
 }
 .intro p{
-    white-space: pre-wrap; width: 80%;margin: 0 auto;margin-top: 30px;
+    white-space: pre-wrap; 
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 30px;
 }
     @media screen and (max-width: 860px) {
         .intro{
@@ -109,7 +123,7 @@ $(document).ready(function(){
 
                         slideWidth: 200,
 
-                        maxSlides: 4,
+                        maxSlides: 8,
 
                         moveSlides: 1,
 
@@ -122,6 +136,7 @@ $(document).ready(function(){
 var data = {:json_encode($data,320)};
 
 $("body").on('click','.bx-wrapper a img',function(){
+    console.log(this)
     var id = $(this).attr('data-id');
     var html = '';
         $.each(data, function(index, item){
@@ -145,3 +160,16 @@ $('.item:first').addClass('active');
 
 </script>
 </html>
+<style type="text/css">
+    @media screen and (max-width: 870px){
+    .bx-wrapper {
+        width: 310px;
+    }
+    .bx-wrapper img{
+        width: 150px !important;
+    }
+    .slider3 a{
+        width: 150px !important;
+    }
+}
+</style>
